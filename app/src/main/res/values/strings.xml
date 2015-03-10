@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">DiveSafe</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="alititude">Altitude</string>
+    <string name="titleString">Enter Dive Information</string>
+    <string name="depth">Dive Depth:</string>
+    <string name="depth_hint">Enter Depth...</string>
+    <string name="bottomTime">Bottom Time:</string>
+    <string name="pressureLabel">Pressure Group:</string>
+    <string name="enterBottom">Enter Bottom Time...</string>
+    <string name="pressureLetter">Enter Data...</string>
+    <string name="buttonCalc">Calculate</string>
+</resources>
