@@ -1,4 +1,4 @@
-package diveTableNAUI;
+package diveTable;
 
 public class MetersFeet {
 	private int meters;

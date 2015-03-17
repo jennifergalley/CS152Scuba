@@ -1,4 +1,4 @@
-package diveTableNAUI;
+package diveTable;
 
 public class SurfaceIntervalRange {
 	private int min; //bottom number in NAUI Table 2, in minutes

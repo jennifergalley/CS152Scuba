@@ -1,4 +1,4 @@
-package diveTableNAUI;
+package diveTable;
 
 public class DecompressionStop {
 	public int diveTime; //dive time requiring decompression

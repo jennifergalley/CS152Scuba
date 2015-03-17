@@ -1,7 +1,7 @@
-package diveTableNAUI;
+package diveTable;
 
 /* NAUI Dive Table */
-public class DiveTable {
+public class NAUIDiveTable {
 	//Table 1 End-of-Dive Letter Group
 	private DecompressionStop[][] depthTimeFeet = new DecompressionStop[12][10];
 	
@@ -14,7 +14,7 @@ public class DiveTable {
 	//Table 3 Repetitive Dive TimeTable
 	private RNTAMDT[][] repetitiveDiveTimeTable = new RNTAMDT[10][12];
 	
-	public DiveTable () {
+	public NAUIDiveTable () {
 		/* Table 1 */
 		//Depth column of Table 1
 		this.depth[0] = new MetersFeet(12, 40);

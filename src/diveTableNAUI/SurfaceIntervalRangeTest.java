@@ -1,4 +1,4 @@
-package diveTableNAUI;
+package diveTable;
 
 import static org.junit.Assert.*;
 

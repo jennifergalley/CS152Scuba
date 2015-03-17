@@ -1,4 +1,4 @@
-package diveTableNAUI;
+package diveTable;
 
 //NAUI Table 3 Repetitive Dive TimeTable
 public class RNTAMDT {
