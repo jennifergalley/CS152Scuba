@@ -4,36 +4,67 @@ public class PADIDiveTable {
 	/* Front of PADI Table, top left */
 	//depth across top, in feet
 	private int[] depthFeet = {35, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140};
+	//depth across top, in meters
+	private int[] depthMeters = {10, 12, 14, 16, 18, 20, 22, 25, 30, 35, 40, 42};
 	//letter group along side
 	private char[] letterGroup = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
-	//Table 1 - No Decompression Limits and Group Designation Table
-	private int[][] minutesFirst = {
-			{10, 9, 7, 6, 5, 4, 4, 3, 3, 3, 3, 4},
-			{19, 16, 13, 11, 9, 8, 7, 6, 6, 5, 5, 4},
-			{25, 22, 17, 14, 12, 10, 9, 8, 7, 6, 6, 5},
-			{29, 25, 19, 16, 13, 11, 10, 9, 8, 7, 7, 6},
-			{32, 27, 21, 17, 15, 13, 11, 10, 9, 8, 8, 7},
-			{36, 31, 24, 19, 16, 14, 12, 11, 10, 9, 8, 8},
-			{40, 34, 26, 21, 18, 15, 13, 12, 11, 10, 9, 0},
-			{44, 37, 28, 23, 19, 17, 15, 13, 12, 11, 10, 0},
-			{48, 40, 31, 25, 21, 18, 16, 14, 13, 12, 0, 0},
-			{52, 44, 33, 27, 22, 19, 17, 15, 14, 12, 0, 0},
-			{57, 48, 36, 29, 24, 21, 18, 16, 14, 13, 0, 0},
-			{62, 51, 39, 31, 26, 22, 19, 17, 15, 0, 0, 0},
-			{67, 55, 41, 33, 27, 23, 21, 18, 16, 0, 0, 0},
-			{73, 60, 44, 35, 29, 25, 22, 19, 0, 0, 0, 0},
-			{79, 64, 47, 37, 31, 26, 23, 20, 0, 0, 0, 0},
-			{85, 69, 50, 39, 33, 28, 24, 0, 0, 0, 0, 0},
-			{92, 74, 53, 42, 35, 29, 25, 0, 0, 0, 0, 0},
-			{100, 79, 57, 44, 36, 30, 0, 0, 0, 0, 0, 0},
-			{108, 85, 60, 47, 38, 0, 0, 0, 0, 0, 0, 0},
-			{117, 91, 63, 49, 40, 0, 0, 0, 0, 0, 0, 0},
-			{127, 97, 67, 52, 0, 0, 0, 0, 0, 0, 0, 0},
-			{139, 104, 71, 54, 0, 0, 0, 0, 0, 0, 0, 0},
-			{152, 111, 75, 55, 0, 0, 0, 0, 0, 0, 0, 0},
-			{168, 120, 80, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{168, 129, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{205, 140, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+	//Table 1 - No Decompression Limits and Group Designation Table - Feet
+	private int[][] minutesFirstFeet = {
+			{10, 9, 7, 6, 5, 4, 4, 3, 3, 3, 3, 4}, //A
+			{19, 16, 13, 11, 9, 8, 7, 6, 6, 5, 5, 4}, //B
+			{25, 22, 17, 14, 12, 10, 9, 8, 7, 6, 6, 5}, //C
+			{29, 25, 19, 16, 13, 11, 10, 9, 8, 7, 7, 6}, //D
+			{32, 27, 21, 17, 15, 13, 11, 10, 9, 8, 8, 7}, //E
+			{36, 31, 24, 19, 16, 14, 12, 11, 10, 9, 8, 8}, //F
+			{40, 34, 26, 21, 18, 15, 13, 12, 11, 10, 9, 0}, //G
+			{44, 37, 28, 23, 19, 17, 15, 13, 12, 11, 10, 0}, //H
+			{48, 40, 31, 25, 21, 18, 16, 14, 13, 12, 0, 0}, //I
+			{52, 44, 33, 27, 22, 19, 17, 15, 14, 12, 0, 0}, //J
+			{57, 48, 36, 29, 24, 21, 18, 16, 14, 13, 0, 0}, //K
+			{62, 51, 39, 31, 26, 22, 19, 17, 15, 0, 0, 0}, //L
+			{67, 55, 41, 33, 27, 23, 21, 18, 16, 0, 0, 0}, //M
+			{73, 60, 44, 35, 29, 25, 22, 19, 0, 0, 0, 0}, //N
+			{79, 64, 47, 37, 31, 26, 23, 20, 0, 0, 0, 0}, //O
+			{85, 69, 50, 39, 33, 28, 24, 0, 0, 0, 0, 0}, //P
+			{92, 74, 53, 42, 35, 29, 25, 0, 0, 0, 0, 0}, //Q
+			{100, 79, 57, 44, 36, 30, 0, 0, 0, 0, 0, 0}, //R
+			{108, 85, 60, 47, 38, 0, 0, 0, 0, 0, 0, 0}, //S
+			{117, 91, 63, 49, 40, 0, 0, 0, 0, 0, 0, 0}, //T
+			{127, 97, 67, 52, 0, 0, 0, 0, 0, 0, 0, 0}, //U
+			{139, 104, 71, 54, 0, 0, 0, 0, 0, 0, 0, 0}, //V
+			{152, 111, 75, 55, 0, 0, 0, 0, 0, 0, 0, 0}, //W
+			{168, 120, 80, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //X
+			{168, 129, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //Y
+			{205, 140, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} //Z
+	};
+	//Table 1 - No Decompression Limits and Group Designation Table - Meters
+	private int[][] minutesFirstMeters = {
+			{10, 9, 8, 7, 6, 6, 5, 4, 3, 3, 5, 4}, //A
+			{20, 17, 15, 13, 11, 10, 9, 8, 6, 5, 5, 4}, //B
+			{26, 23, 19, 17, 15, 13, 12, 10, 8, 7, 6, 6}, //C
+			{30, 26, 22, 19, 16, 15, 13, 11, 9, 8, 7, 6}, //D
+			{34, 29, 24, 21, 18, 16, 15, 13, 10, 9, 7, 7}, //E
+			{37, 32, 27, 23, 20, 18, 16, 14, 11, 9, 8, 8}, //F
+			{41, 35, 29, 25, 22, 20, 18, 15, 12, 10, 9, 0}, //G
+			{45, 38, 32, 27, 24, 21, 19, 17, 13, 11, 0, 0}, //H
+			{50, 42, 35, 29, 26, 23, 21, 18, 14, 12, 0, 0}, //I
+			{54, 45, 37, 32, 28, 25, 22, 19, 15, 13, 0, 0}, //J
+			{59, 49, 40, 34, 30, 26, 24, 21, 16, 14, 0, 0}, //K
+			{64, 53, 43, 37, 32, 28, 25, 22, 17, 0, 0, 0}, //L
+			{70, 57, 47, 39, 34, 30, 27, 23, 19, 0, 0, 0}, //M
+			{75, 62, 50, 42, 36, 32, 29, 25, 20, 0, 0, 0}, //N
+			{82, 66, 53, 45, 39, 34, 30, 26, 0, 0, 0, 0}, //O
+			{88, 71, 57, 48, 41, 36, 32, 28, 0, 0, 0, 0}, //P
+			{95, 76, 61, 50, 43, 38, 34, 29, 0, 0, 0, 0}, //Q
+			{104, 82, 64, 53, 46, 40, 36, 0, 0, 0, 0, 0}, //R
+			{112, 88, 68, 56, 48, 42, 37, 0, 0, 0, 0, 0}, //S
+			{122, 94, 73, 60, 51, 44, 0, 0, 0, 0, 0, 0}, //T
+			{133, 101, 77, 63, 53, 45, 0, 0, 0, 0, 0, 0}, //U
+			{145, 108, 82, 67, 55, 0, 0, 0, 0, 0, 0, 0}, //V
+			{160, 116, 87, 70, 56, 0, 0, 0, 0, 0, 0, 0}, //W
+			{178, 125, 92, 72, 0, 0, 0, 0, 0, 0, 0, 0}, //X
+			{199, 134, 98, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //Y
+			{219, 147, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} //Z
 	};
 	//Table 2 - Surface Interval Credit Table
 	private SurfaceIntervalRange[][] surfaceIntervalTime = new SurfaceIntervalRange[26][26];
@@ -41,6 +72,12 @@ public class PADIDiveTable {
 	private RNTABT[][] repetitiveDiveTimeTable = new RNTABT[26][11];
 	
 	public PADIDiveTable () {
+		this.initializeFeet();
+		this.intializeMeters();
+		this.intializeSurfaceIntervalRange();
+	}
+	
+	public void intializeSurfaceIntervalRange () {
 		//Table 2
 		//Column 1 (Z, Z)
 		for (int i = 0; i < 25; i++)
@@ -494,7 +531,10 @@ public class PADIDiveTable {
 		this.surfaceIntervalTime[25][23] = new SurfaceIntervalRange(174, 354);
 		this.surfaceIntervalTime[25][24] = new SurfaceIntervalRange(177, 357);
 		this.surfaceIntervalTime[25][25] = new SurfaceIntervalRange(180, 360);
-		
+	}
+	
+	public void initializeFeet () {
+		this.intializeSurfaceIntervalRange();
 		//Table 3
 		//Column 1 - Z
 		this.repetitiveDiveTimeTable[0][0] = new RNTABT(205, 0);
@@ -781,9 +821,310 @@ public class PADIDiveTable {
 		this.repetitiveDiveTimeTable[25][8] = new RNTABT(3, 13);
 		this.repetitiveDiveTimeTable[25][9] = new RNTABT(3, 10);	
 		this.repetitiveDiveTimeTable[25][10] = new RNTABT(3, 7);	
-		
 	}
 
+	public void intializeMeters () {
+		this.intializeSurfaceIntervalRange();
+		//Table 3
+		//Column 1 - Z
+		this.repetitiveDiveTimeTable[0][0] = new RNTABT(219, 0);
+		this.repetitiveDiveTimeTable[0][1] = new RNTABT(147, 0);
+		for (int i = 2; i < 11; i++)
+			this.repetitiveDiveTimeTable[0][i] = new RNTABT(0, 0);
+
+		//Column 2 - Y
+		this.repetitiveDiveTimeTable[1][0] = new RNTABT(199, 20);
+		this.repetitiveDiveTimeTable[1][1] = new RNTABT(134, 13);
+		this.repetitiveDiveTimeTable[1][2] = new RNTABT(98, 0);
+		for (int i = 3; i < 11; i++)
+			this.repetitiveDiveTimeTable[1][i] = new RNTABT(0, 0);
+
+		//Column 3 - X
+		this.repetitiveDiveTimeTable[2][0] = new RNTABT(178, 41);
+		this.repetitiveDiveTimeTable[2][1] = new RNTABT(125, 22);
+		this.repetitiveDiveTimeTable[2][2] = new RNTABT(92, 6);
+		this.repetitiveDiveTimeTable[2][3] = new RNTABT(72, 0);
+		for (int i = 4; i < 11; i++)
+			this.repetitiveDiveTimeTable[2][i] = new RNTABT(0, 0);
+		
+		//Column 4 - W
+		this.repetitiveDiveTimeTable[3][0] = new RNTABT(160, 59);
+		this.repetitiveDiveTimeTable[3][1] = new RNTABT(116, 31);
+		this.repetitiveDiveTimeTable[3][2] = new RNTABT(87, 11);
+		this.repetitiveDiveTimeTable[3][3] = new RNTABT(70, 2);
+		this.repetitiveDiveTimeTable[3][4] = new RNTABT(56, 0);
+		for (int i = 5; i < 11; i++)
+			this.repetitiveDiveTimeTable[3][i] = new RNTABT(0, 0);
+
+		//Column 5 - V
+		this.repetitiveDiveTimeTable[4][0] = new RNTABT(145, 74);
+		this.repetitiveDiveTimeTable[4][1] = new RNTABT(108, 39);
+		this.repetitiveDiveTimeTable[4][2] = new RNTABT(82, 16);
+		this.repetitiveDiveTimeTable[4][3] = new RNTABT(67, 5);
+		this.repetitiveDiveTimeTable[4][4] = new RNTABT(55, 0);
+		for (int i = 5; i < 11; i++)
+			this.repetitiveDiveTimeTable[4][i] = new RNTABT(0, 0);
+
+		//Column 6 - U
+		this.repetitiveDiveTimeTable[5][0] = new RNTABT(133, 86);
+		this.repetitiveDiveTimeTable[5][1] = new RNTABT(101, 46);
+		this.repetitiveDiveTimeTable[5][2] = new RNTABT(77, 21);
+		this.repetitiveDiveTimeTable[5][3] = new RNTABT(63, 9);
+		this.repetitiveDiveTimeTable[5][4] = new RNTABT(53, 3);
+		this.repetitiveDiveTimeTable[5][5] = new RNTABT(45, 0);
+		for (int i = 6; i < 11; i++)
+			this.repetitiveDiveTimeTable[5][i] = new RNTABT(0, 0);
+
+		//Column 7 - T
+		this.repetitiveDiveTimeTable[6][0] = new RNTABT(122, 97);
+		this.repetitiveDiveTimeTable[6][1] = new RNTABT(94, 53);
+		this.repetitiveDiveTimeTable[6][2] = new RNTABT(73, 25);
+		this.repetitiveDiveTimeTable[6][3] = new RNTABT(60, 12);
+		this.repetitiveDiveTimeTable[6][4] = new RNTABT(51, 5);
+		this.repetitiveDiveTimeTable[6][5] = new RNTABT(44, 0);
+		for (int i = 6; i < 11; i++)
+			this.repetitiveDiveTimeTable[6][i] = new RNTABT(0, 0);
+		
+		//Column 8 - S
+		this.repetitiveDiveTimeTable[7][0] = new RNTABT(112, 107);
+		this.repetitiveDiveTimeTable[7][1] = new RNTABT(88, 59);
+		this.repetitiveDiveTimeTable[7][2] = new RNTABT(68, 30);
+		this.repetitiveDiveTimeTable[7][3] = new RNTABT(56, 16);
+		this.repetitiveDiveTimeTable[7][4] = new RNTABT(48, 8);
+		this.repetitiveDiveTimeTable[7][5] = new RNTABT(42, 3);
+		this.repetitiveDiveTimeTable[7][6] = new RNTABT(37, 0);
+		for (int i = 7; i < 11; i++)
+			this.repetitiveDiveTimeTable[7][i] = new RNTABT(0, 0);
+
+		//Column 9 - R
+		this.repetitiveDiveTimeTable[8][0] = new RNTABT(104, 115);
+		this.repetitiveDiveTimeTable[8][1] = new RNTABT(82, 65);
+		this.repetitiveDiveTimeTable[8][2] = new RNTABT(64, 34);
+		this.repetitiveDiveTimeTable[8][3] = new RNTABT(53, 19);
+		this.repetitiveDiveTimeTable[8][4] = new RNTABT(46, 10);
+		this.repetitiveDiveTimeTable[8][5] = new RNTABT(40, 5);
+		this.repetitiveDiveTimeTable[8][6] = new RNTABT(36, 0);
+		for (int i = 7; i < 11; i++)
+			this.repetitiveDiveTimeTable[8][i] = new RNTABT(0, 0);	
+		
+		//Column 10 - Q
+		this.repetitiveDiveTimeTable[9][0] = new RNTABT(95, 124);
+		this.repetitiveDiveTimeTable[9][1] = new RNTABT(76, 71);
+		this.repetitiveDiveTimeTable[9][2] = new RNTABT(61, 37);
+		this.repetitiveDiveTimeTable[9][3] = new RNTABT(50, 22);
+		this.repetitiveDiveTimeTable[9][4] = new RNTABT(43, 13);
+		this.repetitiveDiveTimeTable[9][5] = new RNTABT(38, 7);
+		this.repetitiveDiveTimeTable[9][6] = new RNTABT(34, 3);
+		this.repetitiveDiveTimeTable[9][7] = new RNTABT(29, 0);
+		for (int i = 8; i < 11; i++)
+			this.repetitiveDiveTimeTable[9][i] = new RNTABT(0, 0);	
+		
+		//Column 11 - P
+		this.repetitiveDiveTimeTable[10][0] = new RNTABT(88, 131);
+		this.repetitiveDiveTimeTable[10][1] = new RNTABT(71, 76);
+		this.repetitiveDiveTimeTable[10][2] = new RNTABT(57, 41);
+		this.repetitiveDiveTimeTable[10][3] = new RNTABT(48, 24);
+		this.repetitiveDiveTimeTable[10][4] = new RNTABT(41, 15);
+		this.repetitiveDiveTimeTable[10][5] = new RNTABT(36, 9);
+		this.repetitiveDiveTimeTable[10][6] = new RNTABT(32, 5);
+		this.repetitiveDiveTimeTable[10][7] = new RNTABT(28, 0);
+		for (int i = 8; i < 11; i++)
+			this.repetitiveDiveTimeTable[10][i] = new RNTABT(0, 0);	
+
+		//Column 12 - O
+		this.repetitiveDiveTimeTable[11][0] = new RNTABT(82, 137);
+		this.repetitiveDiveTimeTable[11][1] = new RNTABT(66, 81);
+		this.repetitiveDiveTimeTable[11][2] = new RNTABT(53, 45);
+		this.repetitiveDiveTimeTable[11][3] = new RNTABT(45, 27);
+		this.repetitiveDiveTimeTable[11][4] = new RNTABT(39, 17);
+		this.repetitiveDiveTimeTable[11][5] = new RNTABT(34, 11);
+		this.repetitiveDiveTimeTable[11][6] = new RNTABT(30, 7);
+		this.repetitiveDiveTimeTable[11][7] = new RNTABT(26, 3);
+		for (int i = 8; i < 11; i++)
+			this.repetitiveDiveTimeTable[11][i] = new RNTABT(0, 0);	
+
+		//Column 13 - N
+		this.repetitiveDiveTimeTable[12][0] = new RNTABT(75, 144);
+		this.repetitiveDiveTimeTable[12][1] = new RNTABT(62, 85);
+		this.repetitiveDiveTimeTable[12][2] = new RNTABT(50, 48);
+		this.repetitiveDiveTimeTable[12][3] = new RNTABT(42, 30);
+		this.repetitiveDiveTimeTable[12][4] = new RNTABT(36, 20);
+		this.repetitiveDiveTimeTable[12][5] = new RNTABT(32, 13);
+		this.repetitiveDiveTimeTable[12][6] = new RNTABT(29, 8);
+		this.repetitiveDiveTimeTable[12][7] = new RNTABT(25, 4);
+		this.repetitiveDiveTimeTable[12][8] = new RNTABT(20, 0);
+		for (int i = 9; i < 11; i++)
+			this.repetitiveDiveTimeTable[12][i] = new RNTABT(0, 0);	
+
+		//Column 14 - M
+		this.repetitiveDiveTimeTable[13][0] = new RNTABT(70, 149);
+		this.repetitiveDiveTimeTable[13][1] = new RNTABT(57, 90);
+		this.repetitiveDiveTimeTable[13][2] = new RNTABT(47, 51);
+		this.repetitiveDiveTimeTable[13][3] = new RNTABT(39, 33);
+		this.repetitiveDiveTimeTable[13][4] = new RNTABT(34, 22);
+		this.repetitiveDiveTimeTable[13][5] = new RNTABT(30, 15);
+		this.repetitiveDiveTimeTable[13][6] = new RNTABT(27, 10);
+		this.repetitiveDiveTimeTable[13][7] = new RNTABT(23, 6);
+		this.repetitiveDiveTimeTable[13][8] = new RNTABT(19, 0);
+		this.repetitiveDiveTimeTable[13][9] = new RNTABT(0, 0);	
+		this.repetitiveDiveTimeTable[13][10] = new RNTABT(0, 0);	
+
+		//Column 15 - L
+		this.repetitiveDiveTimeTable[14][0] = new RNTABT(64, 155);
+		this.repetitiveDiveTimeTable[14][1] = new RNTABT(53, 94);
+		this.repetitiveDiveTimeTable[14][2] = new RNTABT(43, 55);
+		this.repetitiveDiveTimeTable[14][3] = new RNTABT(37, 35);
+		this.repetitiveDiveTimeTable[14][4] = new RNTABT(32, 24);
+		this.repetitiveDiveTimeTable[14][5] = new RNTABT(28, 17);
+		this.repetitiveDiveTimeTable[14][6] = new RNTABT(25, 12);
+		this.repetitiveDiveTimeTable[14][7] = new RNTABT(22, 7);
+		this.repetitiveDiveTimeTable[14][8] = new RNTABT(17, 3);
+		this.repetitiveDiveTimeTable[14][9] = new RNTABT(0, 0);	
+		this.repetitiveDiveTimeTable[14][10] = new RNTABT(0, 0);	
+
+		//Column 16 - K
+		this.repetitiveDiveTimeTable[15][0] = new RNTABT(59, 160);
+		this.repetitiveDiveTimeTable[15][1] = new RNTABT(49, 98);
+		this.repetitiveDiveTimeTable[15][2] = new RNTABT(40, 58);
+		this.repetitiveDiveTimeTable[15][3] = new RNTABT(34, 38);
+		this.repetitiveDiveTimeTable[15][4] = new RNTABT(30, 26);
+		this.repetitiveDiveTimeTable[15][5] = new RNTABT(26, 19);
+		this.repetitiveDiveTimeTable[15][6] = new RNTABT(24, 1);
+		this.repetitiveDiveTimeTable[15][7] = new RNTABT(21, 8);
+		this.repetitiveDiveTimeTable[15][8] = new RNTABT(16, 4);
+		this.repetitiveDiveTimeTable[15][9] = new RNTABT(14, 0);	
+		this.repetitiveDiveTimeTable[15][10] = new RNTABT(0, 0);	
+
+		//Column 17 - J
+		this.repetitiveDiveTimeTable[16][0] = new RNTABT(54, 165);
+		this.repetitiveDiveTimeTable[16][1] = new RNTABT(45, 102);
+		this.repetitiveDiveTimeTable[16][2] = new RNTABT(37, 61);
+		this.repetitiveDiveTimeTable[16][3] = new RNTABT(32, 40);
+		this.repetitiveDiveTimeTable[16][4] = new RNTABT(28, 28);
+		this.repetitiveDiveTimeTable[16][5] = new RNTABT(25, 20);
+		this.repetitiveDiveTimeTable[16][6] = new RNTABT(22, 15);
+		this.repetitiveDiveTimeTable[16][7] = new RNTABT(19, 10);
+		this.repetitiveDiveTimeTable[16][8] = new RNTABT(15, 5);
+		this.repetitiveDiveTimeTable[16][9] = new RNTABT(13, 0);	
+		this.repetitiveDiveTimeTable[16][10] = new RNTABT(0, 0);	
+
+		//Column 18 - I
+		this.repetitiveDiveTimeTable[17][0] = new RNTABT(50, 169);
+		this.repetitiveDiveTimeTable[17][1] = new RNTABT(42, 105);
+		this.repetitiveDiveTimeTable[17][2] = new RNTABT(35, 63);
+		this.repetitiveDiveTimeTable[17][3] = new RNTABT(29, 43);
+		this.repetitiveDiveTimeTable[17][4] = new RNTABT(26, 30);
+		this.repetitiveDiveTimeTable[17][5] = new RNTABT(23, 22);
+		this.repetitiveDiveTimeTable[17][6] = new RNTABT(21, 16);
+		this.repetitiveDiveTimeTable[17][7] = new RNTABT(18, 11);
+		this.repetitiveDiveTimeTable[17][8] = new RNTABT(14, 6);
+		this.repetitiveDiveTimeTable[17][9] = new RNTABT(12, 0);	
+		this.repetitiveDiveTimeTable[17][10] = new RNTABT(0, 0);	
+
+		//Column 19 - H
+		this.repetitiveDiveTimeTable[18][0] = new RNTABT(45, 174);
+		this.repetitiveDiveTimeTable[18][1] = new RNTABT(38, 109);
+		this.repetitiveDiveTimeTable[18][2] = new RNTABT(32, 66);
+		this.repetitiveDiveTimeTable[18][3] = new RNTABT(27, 45);
+		this.repetitiveDiveTimeTable[18][4] = new RNTABT(24, 32);
+		this.repetitiveDiveTimeTable[18][5] = new RNTABT(21, 24);
+		this.repetitiveDiveTimeTable[18][6] = new RNTABT(19, 18);
+		this.repetitiveDiveTimeTable[18][7] = new RNTABT(17, 12);
+		this.repetitiveDiveTimeTable[18][8] = new RNTABT(13, 7);
+		this.repetitiveDiveTimeTable[18][9] = new RNTABT(11, 3);	
+		this.repetitiveDiveTimeTable[18][10] = new RNTABT(0, 0);	
+
+		//Column 20 - G
+		this.repetitiveDiveTimeTable[19][0] = new RNTABT(41, 178);
+		this.repetitiveDiveTimeTable[19][1] = new RNTABT(35, 112);
+		this.repetitiveDiveTimeTable[19][2] = new RNTABT(29, 69);
+		this.repetitiveDiveTimeTable[19][3] = new RNTABT(25, 47);
+		this.repetitiveDiveTimeTable[19][4] = new RNTABT(22, 34);
+		this.repetitiveDiveTimeTable[19][5] = new RNTABT(20, 25);
+		this.repetitiveDiveTimeTable[19][6] = new RNTABT(18, 19);
+		this.repetitiveDiveTimeTable[19][7] = new RNTABT(15, 14);
+		this.repetitiveDiveTimeTable[19][8] = new RNTABT(12, 8);
+		this.repetitiveDiveTimeTable[19][9] = new RNTABT(10, 4);	
+		this.repetitiveDiveTimeTable[19][10] = new RNTABT(9, 0);	
+
+		//Column 21 - F
+		this.repetitiveDiveTimeTable[20][0] = new RNTABT(37, 182);
+		this.repetitiveDiveTimeTable[20][1] = new RNTABT(32, 115);
+		this.repetitiveDiveTimeTable[20][2] = new RNTABT(27, 71);
+		this.repetitiveDiveTimeTable[20][3] = new RNTABT(23, 49);
+		this.repetitiveDiveTimeTable[20][4] = new RNTABT(20, 36);
+		this.repetitiveDiveTimeTable[20][5] = new RNTABT(18, 27);
+		this.repetitiveDiveTimeTable[20][6] = new RNTABT(16, 21);
+		this.repetitiveDiveTimeTable[20][7] = new RNTABT(14, 15);
+		this.repetitiveDiveTimeTable[20][8] = new RNTABT(11, 9);
+		this.repetitiveDiveTimeTable[20][9] = new RNTABT(9, 5);	
+		this.repetitiveDiveTimeTable[20][10] = new RNTABT(8, 0);	
+
+		//Column 22 - E
+		this.repetitiveDiveTimeTable[21][0] = new RNTABT(34, 185);
+		this.repetitiveDiveTimeTable[21][1] = new RNTABT(29, 118);
+		this.repetitiveDiveTimeTable[21][2] = new RNTABT(24, 74);
+		this.repetitiveDiveTimeTable[21][3] = new RNTABT(21, 51);
+		this.repetitiveDiveTimeTable[21][4] = new RNTABT(18, 38);
+		this.repetitiveDiveTimeTable[21][5] = new RNTABT(16, 29);
+		this.repetitiveDiveTimeTable[21][6] = new RNTABT(15, 22);
+		this.repetitiveDiveTimeTable[21][7] = new RNTABT(13, 16);
+		this.repetitiveDiveTimeTable[21][8] = new RNTABT(10, 10);
+		this.repetitiveDiveTimeTable[21][9] = new RNTABT(9, 5);	
+		this.repetitiveDiveTimeTable[21][10] = new RNTABT(7, 0);	
+
+		//Column 23 - D
+		this.repetitiveDiveTimeTable[22][0] = new RNTABT(30, 189);
+		this.repetitiveDiveTimeTable[22][1] = new RNTABT(26, 121);
+		this.repetitiveDiveTimeTable[22][2] = new RNTABT(22, 76);
+		this.repetitiveDiveTimeTable[22][3] = new RNTABT(19, 53);
+		this.repetitiveDiveTimeTable[22][4] = new RNTABT(16, 40);
+		this.repetitiveDiveTimeTable[22][5] = new RNTABT(15, 30);
+		this.repetitiveDiveTimeTable[22][6] = new RNTABT(13, 24);
+		this.repetitiveDiveTimeTable[22][7] = new RNTABT(11, 18);
+		this.repetitiveDiveTimeTable[22][8] = new RNTABT(9, 11);
+		this.repetitiveDiveTimeTable[22][9] = new RNTABT(8, 6);	
+		this.repetitiveDiveTimeTable[22][10] = new RNTABT(7, 0);	
+
+		//Column 24 - C
+		this.repetitiveDiveTimeTable[23][0] = new RNTABT(26, 193);
+		this.repetitiveDiveTimeTable[23][1] = new RNTABT(23, 124);
+		this.repetitiveDiveTimeTable[23][2] = new RNTABT(19, 79);
+		this.repetitiveDiveTimeTable[23][3] = new RNTABT(17, 55);
+		this.repetitiveDiveTimeTable[23][4] = new RNTABT(15, 41);
+		this.repetitiveDiveTimeTable[23][5] = new RNTABT(13, 32);
+		this.repetitiveDiveTimeTable[23][6] = new RNTABT(12, 25);
+		this.repetitiveDiveTimeTable[23][7] = new RNTABT(10, 19);
+		this.repetitiveDiveTimeTable[23][8] = new RNTABT(8, 12);
+		this.repetitiveDiveTimeTable[23][9] = new RNTABT(7, 7);	
+		this.repetitiveDiveTimeTable[23][10] = new RNTABT(6, 0);	
+
+		//Column 25 - B
+		this.repetitiveDiveTimeTable[24][0] = new RNTABT(20, 199);
+		this.repetitiveDiveTimeTable[24][1] = new RNTABT(17, 130);
+		this.repetitiveDiveTimeTable[24][2] = new RNTABT(15, 83);
+		this.repetitiveDiveTimeTable[24][3] = new RNTABT(13, 59);
+		this.repetitiveDiveTimeTable[24][4] = new RNTABT(11, 45);
+		this.repetitiveDiveTimeTable[24][5] = new RNTABT(10, 35);
+		this.repetitiveDiveTimeTable[24][6] = new RNTABT(9, 28);
+		this.repetitiveDiveTimeTable[24][7] = new RNTABT(8, 21);
+		this.repetitiveDiveTimeTable[24][8] = new RNTABT(6, 14);
+		this.repetitiveDiveTimeTable[24][9] = new RNTABT(5, 9);	
+		this.repetitiveDiveTimeTable[24][10] = new RNTABT(5, 4);	
+
+		//Column 26 - A
+		this.repetitiveDiveTimeTable[25][0] = new RNTABT(10, 209);
+		this.repetitiveDiveTimeTable[25][1] = new RNTABT(9, 138);
+		this.repetitiveDiveTimeTable[25][2] = new RNTABT(8, 90);
+		this.repetitiveDiveTimeTable[25][3] = new RNTABT(7, 65);
+		this.repetitiveDiveTimeTable[25][4] = new RNTABT(6, 50);
+		this.repetitiveDiveTimeTable[25][5] = new RNTABT(6, 39);
+		this.repetitiveDiveTimeTable[25][6] = new RNTABT(5, 32);
+		this.repetitiveDiveTimeTable[25][7] = new RNTABT(4, 25);
+		this.repetitiveDiveTimeTable[25][8] = new RNTABT(3, 17);
+		this.repetitiveDiveTimeTable[25][9] = new RNTABT(3, 11);	
+		this.repetitiveDiveTimeTable[25][10] = new RNTABT(2, 7);	
+	}
 
 	//get letter group after first dive, given depth of dive in feet and minutes of bottom time
 	//depth must be one of the values in Table 1 exactly. minutes will round up
@@ -797,7 +1138,27 @@ public class PADIDiveTable {
 		
 		int row;
 		for (row = 0; row < 26; row++) {
-			if (this.minutesFirst[row][col] >= minutes) {
+			if (this.minutesFirstFeet[row][col] >= minutes) {
+				break; //get row of table 1
+			}
+		}
+		
+		return this.letterGroup[row]; //return letter group
+	}
+	
+	//get letter group after first dive, given depth of dive in feet and minutes of bottom time
+	//depth must be one of the values in Table 1 exactly. minutes will round up
+	public char getLetterGroupFirstDiveMeters (int depth, int minutes) {
+		int col;
+		for (col = 0; col < 12; col++) {
+			if (depth == this.depthMeters[col]) {
+				break; //get column of table 1
+			}
+		}
+		
+		int row;
+		for (row = 0; row < 26; row++) {
+			if (this.minutesFirstMeters[row][col] >= minutes) {
 				break; //get row of table 1
 			}
 		}

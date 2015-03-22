@@ -26,6 +26,27 @@ public class PADIDiveTableTest {
 		char letter = table.getLetterGroupFirstDiveFeet(40, 140);
 		assertTrue(letter == 'Z');
 	}
+	
+	@Test
+	public void testGetLetterGroupFirstDiveMetersShouldReturnL() {
+		PADIDiveTable table = new PADIDiveTable();
+		char letter = table.getLetterGroupFirstDiveMeters(16, 37);
+		assertTrue(letter == 'L');
+	}
+
+	@Test
+	public void testGetLetterGroupFirstDiveMetersShouldReturnA() {
+		PADIDiveTable table = new PADIDiveTable();
+		char letter = table.getLetterGroupFirstDiveMeters(30, 3);
+		assertTrue(letter == 'A');
+	}
+	
+	@Test
+	public void testGetLetterGroupFirstDiveMetersShouldReturnZ() {
+		PADIDiveTable table = new PADIDiveTable();
+		char letter = table.getLetterGroupFirstDiveMeters(12, 147);
+		assertTrue(letter == 'Z');
+	}
 
 	@Test
 	public void testGetLetterNumberShouldReturn0() {
