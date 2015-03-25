@@ -12,4 +12,18 @@
     <string name="enterBottom">Enter Bottom Time...</string>
     <string name="pressureLetter">Enter Data...</string>
     <string name="buttonCalc">Calculate</string>
+
+    <string-array name="NP_array">
+        <item>NAUI</item>
+        <item>PADI</item>
+    </string-array>
+
+    <string-array name="FM_array">
+        <item>Feet</item>
+        <item>Meters</item>
+    </string-array>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

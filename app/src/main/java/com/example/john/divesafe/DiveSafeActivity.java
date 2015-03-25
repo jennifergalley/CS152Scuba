@@ -1,46 +1,27 @@
 package com.example.john.divesafe;
 
-import android.content.DialogInterface;
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.util.Log;
 
-
-public class DiveSafeActivity extends ActionBarActivity implements View.OnClickListener{
-
-    private EditText depthNum, bottomNum;
-    private TextView pressureGroup;
-    private Button buttonCalculate;
+public class DiveSafeActivity extends Activity
+        implements NauiFeetFragment.OnCalculateButtonListener, SwapperFragment.OnSwapListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dive_safe);
 
-        depthNum = (EditText) findViewById(R.id.depthNum);
-        bottomNum = (EditText) findViewById(R.id.bottomNum);
-        pressureGroup = (TextView) findViewById(R.id.pressureGroup);
-        buttonCalculate = (Button) findViewById(R.id.buttonCalculate);
-
-        buttonCalculate.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View view){
-        double depth, bottom;
-        depth = Double.parseDouble(depthNum.getText().toString());
-        bottom = Double.parseDouble(bottomNum.getText().toString());
-
-        DiveTable DT = new DiveTable();
-        Log.d("DSA ", "Depth: "+(int)depth+" Bottom: "+(int)bottom);
-        char P = DT.getLetterGroupFirstDiveFeet((int)depth, (int)bottom);
-        pressureGroup.setText(Character.toString(P));
+        Log.d("DSA","Create");
+        if(savedInstanceState == null){
+            Log.d("DSA","Startup");
+            FragmentManager fragMan = getFragmentManager();
+                    fragMan.beginTransaction()
+                        .add(R.id.fragment_container, NauiFeetFragment.newInstance("string", "string")).commit();
+        }
 
     }
 
@@ -64,5 +45,25 @@ public class DiveSafeActivity extends ActionBarActivity implements View.OnClickL
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onCalculateButtonListener(String pGroup){
+        Log.d("DSA: ",pGroup);
+    }
+
+    public void onSwap(String m, String t){
+        //code to change the current table/measurement goes here
+        Log.d("DSA", m);
+        Log.d("DSA", t);
+        if(m.toLowerCase().contains("meters")){
+            Log.d("DSA", "is meters");
+            FragmentManager fragMan = getFragmentManager();
+            fragMan.beginTransaction()
+                    .replace(R.id.fragment_container, TestFragment.newInstance()).commit();
+        } else {
+            FragmentManager fragMan = getFragmentManager();
+            fragMan.beginTransaction()
+                    .replace(R.id.fragment_container, NauiFeetFragment.newInstance("string", "string")).commit();
+        }
     }
 }
