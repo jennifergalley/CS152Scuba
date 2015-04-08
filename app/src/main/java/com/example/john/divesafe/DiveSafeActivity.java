@@ -15,12 +15,10 @@ public class DiveSafeActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dive_safe);
 
-        Log.d("DSA","Create");
         if(savedInstanceState == null){
-            Log.d("DSA","Startup");
             FragmentManager fragMan = getFragmentManager();
                     fragMan.beginTransaction()
-                        .add(R.id.fragment_container, NauiFeetFragment.newInstance("string", "string")).commit();
+                        .add(R.id.fragment_container, NauiFeetFragment.newInstance()).commit();
         }
 
     }
@@ -63,7 +61,7 @@ public class DiveSafeActivity extends Activity
         } else {
             FragmentManager fragMan = getFragmentManager();
             fragMan.beginTransaction()
-                    .replace(R.id.fragment_container, NauiFeetFragment.newInstance("string", "string")).commit();
+                    .replace(R.id.fragment_container, NauiFeetFragment.newInstance()).commit();
         }
     }
 }
