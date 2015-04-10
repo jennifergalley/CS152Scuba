@@ -25,5 +25,9 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="buttonAdd">Add Another</string>
+    <string name="curdivestring">Current Dive:</string>
+    <string name="presStop">Decompress Stop:</string>
+    <string name="decompress">N/A</string>
 
 </resources>

@@ -45,8 +45,10 @@ public class DiveSafeActivity extends Activity
         return super.onOptionsItemSelected(item);
     }
 
-    public void onCalculateButtonListener(String pGroup){
-        Log.d("DSA: ",pGroup);
+    public void onCalculateButtonListener(int id, Dive d){
+        if(id == 2) {
+            //calculate
+        }
     }
 
     public void onSwap(String m, String t){

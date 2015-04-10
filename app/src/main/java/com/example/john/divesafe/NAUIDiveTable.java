@@ -1,4 +1,4 @@
-package diveTable;
+package com.example.john.divesafe;
 
 /* NAUI Dive Table */
 public class NAUIDiveTable {

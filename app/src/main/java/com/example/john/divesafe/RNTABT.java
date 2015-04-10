@@ -1,4 +1,4 @@
-package diveTable;
+package com.example.john.divesafe;
 
 //PADI Table 3 Repetitive Dive TimeTable
 public class RNTABT {

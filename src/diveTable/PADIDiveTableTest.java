@@ -1,4 +1,4 @@
-package diveTable;
+package com.example.john.divesafe;
 
 import static org.junit.Assert.*;
 

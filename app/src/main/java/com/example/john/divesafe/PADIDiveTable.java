@@ -1,4 +1,4 @@
-package diveTable;
+package com.example.john.divesafe;
 
 public class PADIDiveTable {
 	/* Front of PADI Table, top left */
