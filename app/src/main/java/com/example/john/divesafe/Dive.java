@@ -5,4 +5,5 @@ package com.example.john.divesafe;
  */
 public class Dive {
     public double depth,bottomTime;
+    public boolean isSIT = false;
 }

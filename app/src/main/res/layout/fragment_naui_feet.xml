@@ -70,7 +70,7 @@
             android:inputType="numberDecimal"
             android:ems="10"
             android:id="@+id/depthNum"
-            android:layout_toRightOf="@+id/textView7"
+            android:layout_toRightOf="@+id/textView8"
             android:layout_toEndOf="@+id/textView"
             android:linksClickable="true"
             android:hint="@string/depth_hint"
@@ -108,7 +108,7 @@
             android:inputType="numberDecimal"
             android:ems="10"
             android:id="@+id/bottomNum"
-            android:layout_toRightOf="@+id/textView7"
+            android:layout_toRightOf="@+id/textView8"
             android:layout_toEndOf="@+id/textView2"
             android:layout_alignBaseline="@+id/textView2"
             android:layout_alignParentRight="true"
@@ -120,7 +120,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/pressureLetter"
             android:id="@+id/pressureGroup"
-            android:layout_toRightOf="@+id/textView7"
+            android:layout_toRightOf="@+id/textView8"
             android:layout_toEndOf="@+id/textView3"
             android:layout_alignBaseline="@+id/textView3"
             android:gravity="center_horizontal" />
@@ -143,17 +143,39 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/decompress"
             android:id="@+id/decompressStop"
-            android:layout_toRightOf="@+id/textView7"
+            android:layout_toRightOf="@+id/textView8"
             android:layout_alignBaseline="@+id/textView7"
             android:layout_toEndOf="@+id/textView7"
             android:gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/SITtime"
+            android:id="@+id/textView8"
+            android:layout_below="@+id/textView7"
+            android:layout_alignLeft="@+id/textView7"
+            android:layout_marginTop="15dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/SIT"
+            android:layout_toRightOf="@+id/textView8"
+            android:layout_alignBaseline="@+id/textView8"
+            android:layout_toEndOf="@+id/textView8"
+            android:layout_alignParentRight="true"
+            android:hint="Add SIT..."
+            android:singleLine="false"
+            android:inputType="number" />
 
         <RelativeLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_alignParentEnd="true"
-            android:layout_below="@+id/textView7"
+            android:layout_below="@+id/textView8"
             android:layout_marginTop="15dp"
             android:clickable="true">
 
@@ -161,7 +183,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/buttonCalc"
-                android:id="@+id/buttonCalculate"
+                android:id="@+id/buttonDone"
                 android:gravity="center"
                 android:layout_gravity="left"
                 android:layout_alignParentTop="true"
@@ -176,6 +198,15 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/undo"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="33dp"
+                android:layout_toRightOf="@+id/buttonAdd"
+                android:text="@string/undoButton" />
 
         </RelativeLayout>
 

@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.util.Log;
 
 public class DiveSafeActivity extends Activity
-        implements NauiFeetFragment.OnCalculateButtonListener, SwapperFragment.OnSwapListener {
+        implements NauiFeetFragment.OnDoneButtonListener, SwapperFragment.OnSwapListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class DiveSafeActivity extends Activity
         return super.onOptionsItemSelected(item);
     }
 
-    public void onCalculateButtonListener(int id, Dive d){
+    public void onDoneButtonListener(int id, Dive d){
         if(id == 2) {
             //calculate
         }
