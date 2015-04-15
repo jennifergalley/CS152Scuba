@@ -1181,17 +1181,17 @@ public class PADIDiveTable {
 	public int getTotalDiveTimeFeet (char group, int depth, int minutes){
 		int ind = getLetterNumber(group);
 		if (ind == -1) {
-			return '1'; //error - out of range
+			return -1; //error - out of range
 		}
 		int col = 25 - ind;
 		int row = getIndexDepthFeet (depth);
 		if (row == -1) {
-			return '1'; //error - depth out of range
+			return -1; //error - depth out of range
 		}
 		int rnt = repetitiveDiveFeet[col][row].getRNT();
 		int abt = repetitiveDiveFeet[col][row].getABT();
 		if (minutes > abt) {
-			return '1'; //error - minutes out of range
+			return -1; //error - minutes out of range
 		}
 		return rnt + minutes;
 	}
@@ -1199,17 +1199,17 @@ public class PADIDiveTable {
 	public int getTotalDiveTimeMeters (char group, int depth, int minutes){
 		int ind = getLetterNumber(group);
 		if (ind == -1) {
-			return '1'; //error - out of range
+			return -1; //error - out of range
 		}
 		int col = 25 - ind;
 		int row = getIndexDepthMeters (depth);
 		if (row == -1) {
-			return '1'; //error - depth out of range
+			return -1; //error - depth out of range
 		}
 		int rnt = repetitiveDiveMeters[col][row].getRNT();
 		int abt = repetitiveDiveMeters[col][row].getABT();
 		if (minutes > abt) {
-			return '1'; //error - minutes out of range
+			return -1; //error - minutes out of range
 		}
 		return rnt + minutes;
 	}
@@ -1223,7 +1223,7 @@ public class PADIDiveTable {
 	public char getLetterGroupFirstDiveFeet (int depth, int minutes) {
 		int col = getIndexDepthFeet (depth);
 		if (col == -1) {
-			return '1'; //error - depth out of range
+			return '1'; //error - depth is out of range
 		}
 		
 		int row;
@@ -1236,7 +1236,7 @@ public class PADIDiveTable {
 		}
 		
 		if (!valid) {
-			return '1'; //error - out of range
+			return '1'; //error - minutes is out of range
 		}
 		
 		return letterGroup[row]; //return letter group
@@ -1247,7 +1247,7 @@ public class PADIDiveTable {
 	public char getLetterGroupFirstDiveMeters (int depth, int minutes) {
 		int col = getIndexDepthMeters (depth);
 		if (col == -1) {
-			return '1'; //error - depth out of range
+			return '1'; //error - depth is out of range
 		}
 		
 		int row;
@@ -1260,7 +1260,7 @@ public class PADIDiveTable {
 		}
 		
 		if (!valid) {
-			return '1'; //error - out of range
+			return '1'; //error - minutes is out of range
 		}
 		
 		return letterGroup[row]; //return letter group
@@ -1272,7 +1272,7 @@ public class PADIDiveTable {
 	public char getLetterGroupSurfaceIntervalTime (char letter, int minutes) {
 		int row = getLetterNumber (letter); //get column of Table 2
 		if (row == -1) {
-			return '1'; //error - out of range
+			return '1'; //error - pressure group is out of range
 		}
 		
 		int col;
@@ -1295,7 +1295,7 @@ public class PADIDiveTable {
 	public char getLetterGroupRepetitiveDiveFeet (char group, int depth, int minutes) {
 		int totalDiveTime = getTotalDiveTimeFeet(group, depth, minutes);
 		if (totalDiveTime == -1) {
-			return '1'; //error
+			return '1'; //error - either depth, pressure group, or minutes is out of range
 		}
 		return getLetterGroupFirstDiveFeet(depth, totalDiveTime);
 	}
@@ -1305,7 +1305,7 @@ public class PADIDiveTable {
 	public char getLetterGroupRepetitiveDiveMeters (char group, int depth, int minutes) {
 		int totalDiveTime = getTotalDiveTimeMeters(group, depth, minutes);
 		if (totalDiveTime == -1) {
-			return '1'; //error
+			return '1'; //error - either depth, pressure group, or minutes is out of range
 		}
 		return getLetterGroupFirstDiveMeters(depth, totalDiveTime);
 	}
@@ -1333,6 +1333,7 @@ public class PADIDiveTable {
 	
 	//grey boxes in table 1
 	//for all cases where a safety stop is required, the safety stop is at 15 feet for 3 minutes
+	//returns true if a safety stop is required, false if not
 	public boolean safetyStopRequiredFeet (int depth, int minutes) {
 		return (depth >= 100) ||
 			(depth <= 35 && minutes >= 139) ||
@@ -1346,6 +1347,7 @@ public class PADIDiveTable {
 
 	//grey boxes in table 1
 	//for all cases where a safety stop is required, the safety stop is at 15 feet for 3 minutes
+	//returns true if a safety stop is required, false if not
 	public boolean safetyStopRequiredMeters (int depth, int minutes) {
 		return (depth >= 30) ||
 			(depth <= 10 && minutes >= 145) ||

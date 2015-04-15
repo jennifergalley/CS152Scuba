@@ -611,13 +611,12 @@ public class NAUIDiveTable {
 	public char getLetterGroupFirstDiveFeet (int depth, int minutes) {
 		int row = getIndexDepthFeet(depth);
 		if (row == -1) {
-			return '1'; //out of range - return an error to user
+			return '1'; //error - depth out of range
 		}
 		
 		int col = getColFirstDiveTable (row, minutes);
-		
 		if (col == -1) {
-			return '1'; //error - out of range
+			return '1'; //error - minutes out of range
 		}
 			
 		return letterGroup[col]; //return letter group
@@ -628,13 +627,12 @@ public class NAUIDiveTable {
 	public char getLetterGroupFirstDiveMeters (int depth, int minutes) {
 		int row = getIndexDepthMeters(depth);
 		if (row == -1) {
-			return '1'; //out of range - return an error to user
+			return '1'; //error - depth out of range
 		}
 		
 		int col = getColFirstDiveTable (row, minutes);
-		
 		if (col == -1) {
-			return '1'; //error - out of range
+			return '1'; //error - minutes out of range
 		}
 			
 		return letterGroup[col]; //return letter group
@@ -644,17 +642,16 @@ public class NAUIDiveTable {
 	//minutes must be >= 10, letter must be A - L
 	public char getLetterGroupSurfaceIntervalTime (char letter, int minutes) {
 		if (minutes < 10) {
-			//error - surface interval time must be at least 10 minutes
-			return '1'; 
+			return '1'; //error - surface interval time must be at least 10 minutes
 		} else if (minutes > 1440) {
 			//a wait of more than 24 hours means another dive is not considered a repetitive dive 
-			//(pressure group is none in that case)
+			//pressure group is none in that case
 			return '2';
 		}
 		
 		int col = getLetterNumber (letter); //get column of Table 2
 		if (col == -1) {
-			return '1'; //error - out of range
+			return '1'; //error - pressure group out of range
 		}
 		
 		int row;
@@ -673,7 +670,7 @@ public class NAUIDiveTable {
 	public char getLetterGroupRepetitiveDiveFeet (char group, int depth, int minutes) {
 		int totalDiveTime = getTotalDiveTimeFeet(group, depth, minutes);
 		if (totalDiveTime == -1) {
-			return '1'; //error
+			return '1'; //error - either depth, pressure group, or minutes is out of range
 		}
 		return getLetterGroupFirstDiveFeet(depth, totalDiveTime);
 	}
@@ -683,7 +680,7 @@ public class NAUIDiveTable {
 	public char getLetterGroupRepetitiveDiveMeters (char group, int depth, int minutes) {
 		int totalDiveTime = getTotalDiveTimeMeters(group, depth, minutes);
 		if (totalDiveTime == -1) {
-			return '1'; //error
+			return '1'; //error - either depth, pressure group, or minutes is out of range
 		}
 		return getLetterGroupFirstDiveMeters(depth, totalDiveTime);
 	}
@@ -716,6 +713,7 @@ public class NAUIDiveTable {
 		if (row == -1) {
 			return -1; //error - depth out of range
 		}
+		
 		int col = getColFirstDiveTable (row, minutes);
 		if (col == -1) {
 			return -1; //error - minutes out of range
@@ -730,6 +728,7 @@ public class NAUIDiveTable {
 		if (row == -1) {
 			return -1; //error - depth out of range
 		}
+		
 		int col = getColFirstDiveTable (row, minutes);
 		if (col == -1) {
 			return -1; //error - minutes out of range
@@ -742,12 +741,17 @@ public class NAUIDiveTable {
 	public int decompressionStopMinutesRepetitiveDiveFeet (char group, int depth, int minutes) {
 		int totalDiveTime = getTotalDiveTimeFeet (group, depth, minutes);
 		if (totalDiveTime == -1) {
-			return -1; //error - out of range
+			return -1; //error - either depth, pressure group, or minutes is out of range
 		}
+		
 		int row = getIndexDepthFeet (depth);
+		if (row == -1) {
+			return -1; //error - depth time out of range
+		}
+		
 		int col = getColFirstDiveTable (row, totalDiveTime);
 		if (col == -1) {
-			return -1; //error - out of range
+			return -1; //error - dive time out of range
 		}
 		return firstDiveTable[col][row].getStopTime();
 	}
@@ -757,12 +761,17 @@ public class NAUIDiveTable {
 	public int decompressionStopMinutesRepetitiveDiveMeters (char group, int depth, int minutes) {
 		int totalDiveTime = getTotalDiveTimeMeters (group, depth, minutes);
 		if (totalDiveTime == -1) {
-			return -1; //error - out of range
+			return -1; //error - either depth, pressure group, or minutes is out of range
 		}
+		
 		int row = getIndexDepthMeters (depth);
+		if (row == -1) {
+			return -1; //error - depth time out of range
+		}
+		
 		int col = getColFirstDiveTable (row, totalDiveTime);
 		if (col == -1) {
-			return -1; //error - out of range
+			return -1; //error - dive time out of range
 		}
 		return firstDiveTable[col][row].getStopTime();
 	}
