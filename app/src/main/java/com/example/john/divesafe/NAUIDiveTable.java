@@ -488,6 +488,12 @@ public class NAUIDiveTable {
 		
 	}
 	
+	
+	/*
+	 * Helper Functions - DO NOT CALL
+	 * You should not need to worry about how these are implemented
+	 */
+	
 	public int getIndexDepthFeet (int depth) {
 		int index;
 		boolean valid = false;
@@ -538,6 +544,67 @@ public class NAUIDiveTable {
 		
 		return col;
 	}
+
+	//returns the index in letterGroup of a given letter
+	//letter must be A - L
+	public int getLetterNumber (char letter) {
+		int index;
+		boolean valid = false;
+		for (index = 0; index < 12; index++) { //replace loop with direct mapping to numbers? Switch statement?
+			if (letterGroup[index] == letter) {
+				valid = true;
+				break; //get column of Table 2
+			}
+		}
+		if (!valid) {
+			return -1; //error - out of range
+		}
+		return index;
+	}
+	
+	public int getTotalDiveTimeFeet (char group, int depth, int minutes){
+		int row = getLetterNumber (group);
+		if (row == -1) {
+			return -1; //error - out of range
+		}
+		int col = getIndexDepthFeet (depth);
+		if (col == -1) {
+			return -1; //error - depth out of range
+		}
+		int rnt = repetitiveDiveTable[col][row].getRNT();
+		if (rnt == 0) {
+			return -1; //error - this depth is out of range!
+		}
+		int amdt = repetitiveDiveTable[col][row].getAMDT();
+		if (minutes > amdt) {
+			return -1; //error - this time is out of range!
+		}
+		return rnt + minutes;
+	}
+	
+	public int getTotalDiveTimeMeters (char group, int depth, int minutes) {
+		int row = getLetterNumber (group);
+		if (row == -1) {
+			return -1; //error - out of range
+		}
+		int col = getIndexDepthMeters (depth);
+		if (col == -1) {
+			return -1; //error - depth out of range
+		}
+		int rnt = repetitiveDiveTable[col][row].getRNT();
+		if (rnt == 0) {
+			return -1; //error - this depth is out of range!
+		}
+		int amdt = repetitiveDiveTable[col][row].getAMDT();
+		if (minutes > amdt) {
+			return -1; //error - this time is out of range!
+		}
+		return rnt + minutes;
+	}
+	
+	/*
+	 * End of helper functions
+	 */
 	
 	//get letter group after first dive, given depth of dive in feet and minutes of bottom time
 	//depth must be one of the values in Table 1 exactly. minutes will round up
@@ -573,23 +640,6 @@ public class NAUIDiveTable {
 		return letterGroup[col]; //return letter group
 	}
 	
-	//returns the index in letterGroup of a given letter
-	//letter must be A - L
-	public int getLetterNumber (char letter) {
-		int index;
-		boolean valid = false;
-		for (index = 0; index < 12; index++) { //replace loop with direct mapping to numbers? Switch statement?
-			if (letterGroup[index] == letter) {
-				valid = true;
-				break; //get column of Table 2
-			}
-		}
-		if (!valid) {
-			return -1; //error - out of range
-		}
-		return index;
-	}
-	
 	//gets the letter group after being in a given letter group and being on the surface for this many minutes
 	//minutes must be >= 10, letter must be A - L
 	public char getLetterGroupSurfaceIntervalTime (char letter, int minutes) {
@@ -618,46 +668,8 @@ public class NAUIDiveTable {
 		return letterGroup[row];
 	}
 	
-	public int getTotalDiveTimeFeet (char group, int depth, int minutes){
-		int row = getLetterNumber (group);
-		if (row == -1) {
-			return '1'; //error - out of range
-		}
-		int col = getIndexDepthFeet (depth);
-		if (col == -1) {
-			return -1; //error - depth out of range
-		}
-		int rnt = repetitiveDiveTable[col][row].getRNT();
-		if (rnt == 0) {
-			return -1; //error - this depth is out of range!
-		}
-		int amdt = repetitiveDiveTable[col][row].getAMDT();
-		if (minutes > amdt) {
-			return -1; //error - this time is out of range!
-		}
-		return rnt + minutes;
-	}
-	
-	public int getTotalDiveTimeMeters (char group, int depth, int minutes) {
-		int row = getLetterNumber (group);
-		if (row == -1) {
-			return '1'; //error - out of range
-		}
-		int col = getIndexDepthMeters (depth);
-		if (col == -1) {
-			return -1; //error - depth out of range
-		}
-		int rnt = repetitiveDiveTable[col][row].getRNT();
-		if (rnt == 0) {
-			return -1; //error - this depth is out of range!
-		}
-		int amdt = repetitiveDiveTable[col][row].getAMDT();
-		if (minutes > amdt) {
-			return -1; //error - this time is out of range!
-		}
-		return rnt + minutes;
-	}
-	
+	//get the pressure group after a repetitive dive given the starting pressure group,
+	//the depth in feet, and the bottom time in minutes
 	public char getLetterGroupRepetitiveDiveFeet (char group, int depth, int minutes) {
 		int totalDiveTime = getTotalDiveTimeFeet(group, depth, minutes);
 		if (totalDiveTime == -1) {
@@ -666,6 +678,8 @@ public class NAUIDiveTable {
 		return getLetterGroupFirstDiveFeet(depth, totalDiveTime);
 	}
 
+	//get the pressure group after a repetitive dive given the starting pressure group,
+	//the depth in meters, and the bottom time in minutes
 	public char getLetterGroupRepetitiveDiveMeters (char group, int depth, int minutes) {
 		int totalDiveTime = getTotalDiveTimeMeters(group, depth, minutes);
 		if (totalDiveTime == -1) {
@@ -674,10 +688,14 @@ public class NAUIDiveTable {
 		return getLetterGroupFirstDiveMeters(depth, totalDiveTime);
 	}
 	
+	//returns true if the dive is at a safe elevation to be used with the NAUI dive table
+	//if the elevation is above 1000 feet, the NAUI dive table should not be used
 	public boolean safeDiveElevationFeet (int elevation) {
 		return elevation <= 1000;
 	}
-	
+
+	//returns true if the dive is at a safe elevation to be used with the NAUI dive table
+	//if the elevation is above 304 meters (1000 feet), the NAUI dive table should not be used
 	public boolean safeDiveElevationMeters (int elevation) {
 		return elevation <= 304.8;
 	}
