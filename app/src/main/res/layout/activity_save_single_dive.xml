@@ -1,0 +1,89 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.jennifer.scubadb.SaveSingleDive">
+
+   <!-- <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />-->
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Your Saved Dives"
+        android:id="@+id/Title"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textAlignment="center"
+        android:textIsSelectable="false"
+        android:gravity="center_horizontal"
+        android:singleLine="false" />
+
+    <EditText
+        android:id="@+id/depth"
+        android:inputType="number"
+        android:hint="Depth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Title"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/btime"
+        android:inputType="number"
+        android:hint="Bottom Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/depth"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/pgroup"
+        android:hint="Ending Pressure Group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btime"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/dtime"
+        android:inputType="number"
+        android:hint="Decompression Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pgroup"
+        android:ems="10" >
+    </EditText>
+
+    <Button
+        android:id="@+id/addBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dtime"
+        android:onClick="addDive"
+        android:text="Add New" />
+
+    <Button
+        android:id="@+id/deleteBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/addBtn"
+        android:layout_below="@+id/dtime"
+        android:onClick="deleteFirstDive"
+        android:text="Delete First" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/deleteBtn" >
+    </ListView>
+
+</RelativeLayout>

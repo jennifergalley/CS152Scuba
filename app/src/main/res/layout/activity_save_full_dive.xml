@@ -1,0 +1,375 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.jennifer.scubadb.SaveFullDive">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Your Saved Dives"
+        android:id="@+id/Title"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textAlignment="center"
+        android:textIsSelectable="false"
+        android:gravity="center_horizontal"
+        android:singleLine="false" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Dive 1"
+            android:id="@+id/Dive1"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textAlignment="center"
+            android:textIsSelectable="false"
+            android:singleLine="false"
+            android:gravity="left"
+            android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/depth1"
+        android:inputType="number"
+        android:hint="Depth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Title"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/btime1"
+        android:inputType="number"
+        android:hint="Bottom Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/depth1"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/pgroup1"
+        android:hint="Ending Pressure Group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btime1"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/dtime1"
+        android:inputType="number"
+        android:hint="Decompression Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pgroup1"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/sit1"
+        android:inputType="number"
+        android:hint="Surface Interval Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dtime1"
+        android:ems="10" >
+    </EditText>
+
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Dive 2"
+        android:id="@+id/Dive2"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textAlignment="center"
+        android:textIsSelectable="false"
+        android:gravity="left"
+        android:singleLine="false"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/depth2"
+        android:inputType="number"
+        android:hint="Depth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sit1"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/btime2"
+        android:inputType="number"
+        android:hint="Bottom Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/depth2"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/pgroup2"
+        android:hint="Ending Pressure Group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btime2"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/dtime2"
+        android:inputType="number"
+        android:hint="Decompression Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pgroup2"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/sit2"
+        android:inputType="number"
+        android:hint="Surface Interval Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dtime2"
+        android:ems="10" >
+    </EditText>
+
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Dive 3"
+        android:id="@+id/Dive3"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textAlignment="center"
+        android:textIsSelectable="false"
+        android:singleLine="false"
+        android:gravity="left"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/depth3"
+        android:inputType="number"
+        android:hint="Depth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sit2"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/btime3"
+        android:inputType="number"
+        android:hint="Bottom Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/depth3"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/pgroup3"
+        android:hint="Ending Pressure Group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btime3"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/dtime3"
+        android:inputType="number"
+        android:hint="Decompression Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pgroup3"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/sit3"
+        android:inputType="number"
+        android:hint="Surface Interval Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dtime3"
+        android:ems="10" >
+    </EditText>
+
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Dive 4"
+        android:id="@+id/Dive4"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textAlignment="center"
+        android:textIsSelectable="false"
+        android:gravity="left"
+        android:singleLine="false"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/depth4"
+        android:inputType="number"
+        android:hint="Depth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sit3"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/btime4"
+        android:inputType="number"
+        android:hint="Bottom Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/depth4"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/pgroup4"
+        android:hint="Ending Pressure Group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btime4"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/dtime4"
+        android:inputType="number"
+        android:hint="Decompression Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pgroup4"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/sit4"
+        android:inputType="number"
+        android:hint="Surface Interval Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dtime4"
+        android:ems="10" >
+    </EditText>
+
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Dive 5"
+        android:id="@+id/Dive5"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textAlignment="center"
+        android:textIsSelectable="false"
+        android:gravity="left"
+        android:singleLine="false"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/depth5"
+        android:inputType="number"
+        android:hint="Depth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sit4"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/btime5"
+        android:inputType="number"
+        android:hint="Bottom Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/depth5"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/pgroup5"
+        android:hint="Ending Pressure Group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btime5"
+        android:ems="10" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/dtime5"
+        android:inputType="number"
+        android:hint="Decompression Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pgroup5"
+        android:ems="10" >
+    </EditText>
+
+    <Button
+        android:id="@+id/addBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dtime5"
+        android:onClick="addDive"
+        android:text="Add New" />
+
+    <Button
+        android:id="@+id/deleteBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/addBtn"
+        android:layout_below="@+id/dtime5"
+        android:onClick="deleteFirstDive"
+        android:text="Delete First" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/deleteBtn" >
+    </ListView>
+
+    </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
