@@ -16,19 +16,20 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.text.TextUtils.*;
-
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link NauiFeetFragment.OnDoneButtonListener} interface
+ * {@link NauiMetersFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link NauiFeetFragment#newInstance} factory method to
+ * Use the {@link NauiMetersFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NauiFeetFragment extends Fragment implements View.OnClickListener {
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+public class NauiMetersFragment extends Fragment implements View.OnClickListener {
+
+
+
+    private OnFragmentInteractionListener mListener;
     public List<Dive> currentDive = new ArrayList<Dive>();
     private EditText depthNum, bottomNum;
     private TextView pressureGroup, diveData, decompressStop, Sit;
@@ -36,29 +37,29 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
     private Button buttonUndo;
     private Button buttonAdd;
 
-    private OnDoneButtonListener mListener;
-
-
-    public static NauiFeetFragment newInstance() {
-        NauiFeetFragment fragment = new NauiFeetFragment();
+    public static NauiMetersFragment newInstance() {
+        NauiMetersFragment fragment = new NauiMetersFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
         return fragment;
     }
 
-    public NauiFeetFragment() {
+    public NauiMetersFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_naui_feet, container, false);
-
+        View view = inflater.inflate(R.layout.fragment_naui_meters, container, false);
         depthNum = (EditText) view.findViewById(R.id.depthNum);
         bottomNum = (EditText) view.findViewById(R.id.bottomNum);
         Sit = (EditText) view.findViewById(R.id.SIT);
@@ -75,8 +76,31 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+        }
+    }
+
     @Override
-    public void onClick(View view){
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+//        try {
+//            mListener = (OnFragmentInteractionListener) activity;
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(activity.toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
+    public void onClick(View view) {
         //check for invalid input
         final double depth, bottom;
         NAUIDiveTable DT = new NAUIDiveTable();
@@ -106,15 +130,14 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                     Dive add = new Dive();
                     add.depth = depth;
                     add.bottomTime = bottom;
-                    mListener.onDoneButtonListener(1,add);
                     int decompressTime = 0;
 
 
                     //determine Current letter group and decompression stop data
 
-                    char PG = DT.getLetterGroupFirstDiveFeet((int)add.depth, (int)add.bottomTime);
+                    char PG = DT.getLetterGroupFirstDiveMeters((int)add.depth, (int)add.bottomTime);
 
-                    decompressTime = DT.decompressionStopMinutesFirstDiveFeet((int)add.depth, (int)add.bottomTime);
+                    decompressTime = DT.decompressionStopMinutesFirstDiveMeters((int)add.depth, (int)add.bottomTime);
 
                     if(PG == '1' || decompressTime == -1){
                         depthNum.setText("");
@@ -137,9 +160,9 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                                 continue;
                             }
 
-                            PG = DT.getLetterGroupRepetitiveDiveFeet(PG, (int) currentDive.get(i).depth, (int) currentDive.get(i).bottomTime);
+                            PG = DT.getLetterGroupRepetitiveDiveMeters(PG, (int) currentDive.get(i).depth, (int) currentDive.get(i).bottomTime);
                             Log.d("NFF ", "PG: "+Character.toString(PG));
-                            decompressTime = DT.decompressionStopMinutesRepetitiveDiveFeet(PG, (int) currentDive.get(i).depth, (int) currentDive.get(i).bottomTime);
+                            decompressTime = DT.decompressionStopMinutesRepetitiveDiveMeters(PG, (int) currentDive.get(i).depth, (int) currentDive.get(i).bottomTime);
 
                         }
                         if(PG == '1' || decompressTime == -1){
@@ -262,7 +285,7 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                         pressureGroup.setText(Character.toString(newPG));
 
                         //display curDive
-                        checkSIT();
+
                         String diveDataString = "";
                         for(int i=0; i<currentDive.size();i++){
                             if(currentDive.get(i).isSIT){
@@ -307,31 +330,10 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
             default:
                 throw new RuntimeException("Unknown Button");
         }
-
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnDoneButtonListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
+    public interface OnFragmentInteractionListener {
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnDoneButtonListener {
-        // passes the pressure group back to the activity
-        // note: this is mostly just a test. later all relevant data will be
-        // passed back to make fragment switching easier for the user.
-        public void onDoneButtonListener(int id, Dive d);
     }
 
     public void checkSIT(){

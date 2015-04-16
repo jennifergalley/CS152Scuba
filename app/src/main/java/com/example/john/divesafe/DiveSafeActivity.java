@@ -59,7 +59,7 @@ public class DiveSafeActivity extends Activity
             Log.d("DSA", "is meters");
             FragmentManager fragMan = getFragmentManager();
             fragMan.beginTransaction()
-                    .replace(R.id.fragment_container, TestFragment.newInstance()).commit();
+                    .replace(R.id.fragment_container, NauiMetersFragment.newInstance()).commit();
         } else {
             FragmentManager fragMan = getFragmentManager();
             fragMan.beginTransaction()
