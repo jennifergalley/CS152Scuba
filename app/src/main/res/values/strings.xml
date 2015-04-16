@@ -12,6 +12,9 @@
     <string name="enterBottom">Enter Bottom Time...</string>
     <string name="pressureLetter">Enter Data...</string>
     <string name="buttonCalc">Done</string>
+    <string name="title_activity_save_single_dive">SaveSingleDive</string>
+    <string name="title_activity_save_full_dive">SaveFullDive</string>
+    <string name="title_activity_save_diver">SaveDiver</string>
 
     <string-array name="NP_array">
         <item>NAUI</item>
