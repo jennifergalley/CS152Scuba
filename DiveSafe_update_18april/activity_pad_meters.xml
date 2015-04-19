@@ -1,0 +1,216 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity"
+    android:background="@mipmap/scuba_blur"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="DIVE PROFILE"
+        android:id="@+id/diveProfileHeading_textView"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@android:color/holo_red_dark"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:textSize="40dp"
+        android:gravity="center" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Depth:"
+            android:id="@+id/depth_textView"
+            android:textColor="@android:color/background_light"
+            android:textStyle="bold"
+            android:textSize="20dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/depth_editText"
+            android:hint="Enter depth in meters"
+            android:layout_marginLeft="10dp"
+            android:textColor="@android:color/background_light"
+            android:textColorHint="@android:color/darker_gray" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bottom Time:"
+            android:id="@+id/bottom_Time_textView"
+            android:layout_marginTop="10dp"
+            android:textColor="@android:color/background_light"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/bottom_Time_hh_editText"
+            android:hint="hh"
+            android:layout_marginLeft="10dp"
+            android:textColor="@android:color/background_light"
+            android:textAlignment="center"
+            android:textColorHint="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:id="@+id/hh_mm_colon_textView"
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
+
+        <EditText
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/bottom_Time_mm_editText"
+            android:layout_marginLeft="10dp"
+            android:hint="mm"
+            android:textAlignment="center"
+            android:textColor="@android:color/background_light"
+            android:textColorHint="@android:color/darker_gray" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pressure Group : "
+            android:id="@+id/pressure_group__after_dive_textView"
+            android:layout_marginTop="5dp"
+            android:textColor="@android:color/background_light"
+            android:textStyle="bold"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pressure_group_calculated_textView"
+            android:layout_marginLeft="10dp"
+            android:textColor="#ffff4027" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NDL  :"
+            android:id="@+id/NDL_textView"
+            android:textColor="@android:color/background_light"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/NDL_calculated_textView"
+            android:layout_marginLeft="20dp"
+            android:textColor="@android:color/black"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CLACULATE"
+            android:id="@+id/Calculate_button"
+            android:background="@android:color/black"
+            android:textColor="@android:color/holo_blue_light"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:id="@+id/save_button"
+            android:textColor="@android:color/holo_blue_light"
+            android:background="@android:color/background_dark"
+            android:layout_weight="1"
+            android:layout_marginRight="5dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Clear"
+            android:id="@+id/clear_button"
+            android:textColor="@android:color/holo_blue_light"
+            android:background="@android:color/background_dark"
+            android:layout_weight="1"
+            android:layout_marginLeft="5dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Continue To Next Drive"
+            android:id="@+id/continue_to_next_drive_button"
+            android:textColor="@android:color/holo_blue_light"
+            android:background="@android:color/background_dark"
+            android:onClick="addButtonClickListener" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
