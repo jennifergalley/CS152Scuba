@@ -34,5 +34,6 @@
     <string name="decompress">N/A</string>
     <string name="undoButton">Undo</string>
     <string name="SITtime">Add Surface Interval: </string>
+    <string name="title_activity_show_saved_dive">ShowSavedDive</string>
 
 </resources>

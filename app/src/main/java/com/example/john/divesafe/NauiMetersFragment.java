@@ -20,22 +20,24 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link NauiMetersFragment.OnFragmentInteractionListener} interface
+ * {@link com.example.john.divesafe.NauiMetersFragment.OnDiveAddedListener} interface
  * to handle interaction events.
  * Use the {@link NauiMetersFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class NauiMetersFragment extends Fragment implements View.OnClickListener {
 
-
-
-    private OnFragmentInteractionListener mListener;
+    private OnDiveAddedListener mListener;
+    private OnDiveCompletedListener diveDoneListener;
     public List<Dive> currentDive = new ArrayList<Dive>();
     private EditText depthNum, bottomNum;
     private TextView pressureGroup, diveData, decompressStop, Sit;
     private Button buttonDone;
     private Button buttonUndo;
     private Button buttonAdd;
+    private OnUpdateSITListener updateSIT;
+
+    private DiveOperations diveDBoperation;
 
     public static NauiMetersFragment newInstance() {
         NauiMetersFragment fragment = new NauiMetersFragment();
@@ -48,11 +50,28 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
         // Required empty public constructor
     }
 
+    // Container Activity must implement this interface
+    public interface OnDiveAddedListener {
+        public void OnDiveAdded(int diveID, int SIT);
+    }
+
+    public interface OnUpdateSITListener {
+        public void OnUpdateSIT (int SIT[]);
+    }
+
+    public interface OnDiveCompletedListener {
+        public void OnDiveCompleted();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
         }
+
+        Activity a = getActivity();
+        diveDBoperation = new DiveOperations(a);
+        diveDBoperation.open();
     }
 
     @Override
@@ -80,23 +99,41 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
         }
+        if (diveDoneListener != null) {
+        }
+        if (updateSIT != null) {
+        }
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-//        try {
-//            mListener = (OnFragmentInteractionListener) activity;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
+        try {
+            mListener = (OnDiveAddedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnDiveAddedListener");
+        }
+        try {
+            diveDoneListener = (OnDiveCompletedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnDiveCompletedListener");
+        }
+        try {
+            updateSIT = (OnUpdateSITListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnDiveCompletedListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        diveDoneListener = null;
+        updateSIT = null;
     }
 
     @Override
@@ -107,6 +144,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
 
         switch(view.getId()){
             case R.id.buttonAdd:
+            case R.id.buttonDone:
                 if(!(TextUtils.isEmpty(depthNum.getText()) | TextUtils.isEmpty(bottomNum.getText()))) {
 
                     try {
@@ -132,14 +170,12 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                     add.bottomTime = bottom;
                     int decompressTime = 0;
 
-
                     //determine Current letter group and decompression stop data
+                    char PG = DT.getLetterGroupFirstDiveMeters((int) add.depth, (int) add.bottomTime);
 
-                    char PG = DT.getLetterGroupFirstDiveMeters((int)add.depth, (int)add.bottomTime);
+                    decompressTime = DT.decompressionStopMinutesFirstDiveMeters((int) add.depth, (int) add.bottomTime);
 
-                    decompressTime = DT.decompressionStopMinutesFirstDiveMeters((int)add.depth, (int)add.bottomTime);
-
-                    if(PG == '1' || decompressTime == -1){
+                    if (PG == '1' || decompressTime == -1) {
                         depthNum.setText("");
                         bottomNum.setText("");
 
@@ -149,9 +185,6 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         toast.show();
                         break;
                     }
-
-                    //add to current dive
-                    currentDive.add(add);
 
                     if(currentDive.size() > 1) {
                         for (int i = 1; i < currentDive.size(); i++) {
@@ -177,9 +210,63 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         }
                     }
 
+                    //add to current dive
+                    currentDive.add(add);
+                    int diveNum = currentDive.size() - 1;
+
                     //remove data in the EditText fields so they can be used again
                     depthNum.setText("");
                     bottomNum.setText("");
+
+                    int surfaceTime = 0;
+                    if(!TextUtils.isEmpty(Sit.getText())){
+                        try{
+                            surfaceTime = Integer.parseInt(Sit.getText().toString());
+                        }catch (NumberFormatException e){
+                            CharSequence text = "Please enter a number in Minutes";
+                            int duration = Toast.LENGTH_LONG;
+                            Toast toast = Toast.makeText(getActivity(), text, duration);
+                            toast.show();
+                        }
+
+                        char newPG = DT.getLetterGroupSurfaceIntervalTime(PG, surfaceTime);
+
+                        if(newPG == '2'){
+                            CharSequence text = "Error: Wait time is above 24 Hours";
+                            int duration = Toast.LENGTH_LONG;
+                            Toast toast = Toast.makeText(getActivity(), text, duration);
+                            toast.show();
+                            Sit.setText("");
+                        }
+                        if(newPG == '1'){
+                            CharSequence text = "Error: Wait time must be above 10 Minutes";
+                            int duration = Toast.LENGTH_LONG;
+                            Toast toast = Toast.makeText(getActivity(), text, duration);
+                            toast.show();
+                            Sit.setText("");
+                        }
+
+                        Dive sitDive = new Dive();
+                        sitDive.depth = 0;
+                        sitDive.bottomTime = surfaceTime;
+                        sitDive.isSIT = true;
+
+                        //add to curdive
+                        currentDive.add(sitDive);
+
+                        Sit.setText(""); //blank surface interval time
+                    }
+
+                    //add single dive to single dive table
+                    SingleDive sd = diveDBoperation.addDive((int) currentDive.get(diveNum).depth,
+                            (int) currentDive.get(diveNum).bottomTime, Character.toString(PG),
+                            decompressTime);
+                    int diveID = sd.getId();
+
+                    //save single dive id and surface interval time if exists, or 0 if not
+                    mListener.OnDiveAdded(diveID, surfaceTime);
+
+                    checkSIT();
 
                     //update the display for the user
                     String diveDataString = "";
@@ -201,76 +288,22 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         decompressStop.setText("15 Ft for "+ Integer.toString(decompressTime)+" Min");
                     }
 
-                    if(!TextUtils.isEmpty(Sit.getText())){
-                        double surfaceTime = 0;
-                        try{
-                            surfaceTime = Double.parseDouble(Sit.getText().toString());
-                        }catch (NumberFormatException e){
-                            CharSequence text = "Please enter a number in Minutes";
-                            int duration = Toast.LENGTH_LONG;
-                            Toast toast = Toast.makeText(getActivity(), text, duration);
-                            toast.show();
-                        }
-
-                        char newPG = DT.getLetterGroupSurfaceIntervalTime(PG, (int)surfaceTime);
-
-                        if(newPG == '2'){
-                            CharSequence text = "Error: Wait time is above 24 Hours";
-                            int duration = Toast.LENGTH_LONG;
-                            Toast toast = Toast.makeText(getActivity(), text, duration);
-                            toast.show();
-                            Sit.setText("");
-                        }
-                        if(newPG == '1'){
-                            CharSequence text = "Error: Wait time must be above 10 Minutes";
-                            int duration = Toast.LENGTH_LONG;
-                            Toast toast = Toast.makeText(getActivity(), text, duration);
-                            toast.show();
-                            Sit.setText("");
-                        }
-
-                        Dive sitDive = new Dive();
-                        sitDive.depth = 0;
-                        sitDive.bottomTime = surfaceTime;
-                        sitDive.isSIT = true;
-
-                        //add to curdive
-                        currentDive.add(sitDive);
-
+                    if (view.getId() == R.id.buttonDone) {
+                        diveDoneListener.OnDiveCompleted();
                     }
-                    checkSIT();
                     break;
 
                 }else{
                     if(!TextUtils.isEmpty(Sit.getText()) && currentDive.size() >= 1 && (TextUtils.isEmpty(depthNum.getText()) && TextUtils.isEmpty(bottomNum.getText()))){
                         //add in the SIT
-                        double surfaceTime = 0;
+                        int surfaceTime = 0;
                         try{
-                            surfaceTime = Double.parseDouble(Sit.getText().toString());
+                            surfaceTime = Integer.parseInt(Sit.getText().toString());
                         }catch (NumberFormatException e){
                             CharSequence text = "Please enter a number in Minutes";
                             int duration = Toast.LENGTH_LONG;
                             Toast toast = Toast.makeText(getActivity(), text, duration);
                             toast.show();
-                        }
-
-                        char PG = pressureGroup.getText().charAt(0);
-                        Log.d("NFF ", "PG: "+PG);
-                        char newPG = DT.getLetterGroupSurfaceIntervalTime(PG, (int)surfaceTime);
-
-                        if(newPG == '2'){
-                            CharSequence text = "Error: Wait time is above 24 Hours";
-                            int duration = Toast.LENGTH_LONG;
-                            Toast toast = Toast.makeText(getActivity(), text, duration);
-                            toast.show();
-                            Sit.setText("");
-                        }
-                        if(newPG == '1'){
-                            CharSequence text = "Error: Wait time must be above 10 Minutes";
-                            int duration = Toast.LENGTH_LONG;
-                            Toast toast = Toast.makeText(getActivity(), text, duration);
-                            toast.show();
-                            Sit.setText("");
                         }
 
                         Dive sitDive = new Dive();
@@ -280,12 +313,34 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
 
                         //add to curdive
                         currentDive.add(sitDive);
+                        checkSIT();
+
+                        char PG = pressureGroup.getText().charAt(0);
+                        Log.d("NFF ", "PG: "+PG);
+                        char newPG = DT.getLetterGroupSurfaceIntervalTime(PG, surfaceTime);
                         Log.d("NFF ", "newPG: "+newPG);
+
+                        if(newPG == '2'){
+                            CharSequence text = "Error: Wait time is above 24 Hours";
+                            int duration = Toast.LENGTH_LONG;
+                            Toast toast = Toast.makeText(getActivity(), text, duration);
+                            toast.show();
+                            Sit.setText ("");
+                            break;
+                        }
+                        if(newPG == '1'){
+                            CharSequence text = "Error: Wait time must be above 10 Minutes";
+                            int duration = Toast.LENGTH_LONG;
+                            Toast toast = Toast.makeText(getActivity(), text, duration);
+                            toast.show();
+                            Sit.setText ("");
+                            break;
+                        }
+
                         //display PG
                         pressureGroup.setText(Character.toString(newPG));
 
                         //display curDive
-
                         String diveDataString = "";
                         for(int i=0; i<currentDive.size();i++){
                             if(currentDive.get(i).isSIT){
@@ -298,18 +353,26 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                             if(i!=currentDive.size()-1){diveDataString += ", ";}
                         }
                         diveData.setText(diveDataString);
-                        checkSIT();
+                        Sit.setText("");
+
+                        if (view.getId() == R.id.buttonDone) {
+                            diveDoneListener.OnDiveCompleted();
+                        }
                         break;
                     }
-                    Log.d("NFF ", "Depth or Bottom Empty");
-                    CharSequence text = "Depth or Bottom Time field empty";
-                    int duration = Toast.LENGTH_LONG;
-                    Toast toast = Toast.makeText(getActivity(), text, duration);
-                    toast.show();
 
-                    break;
+                    if (view.getId() != R.id.buttonDone) {
+                        Log.d("NFF ", "Depth or Bottom Empty");
+                        CharSequence text = "Depth or Bottom Time field empty";
+                        int duration = Toast.LENGTH_LONG;
+                        Toast toast = Toast.makeText(getActivity(), text, duration);
+                        toast.show();
+                        break;
+                    } else {
+                        diveDoneListener.OnDiveCompleted();
+                        break;
+                    }
                 }
-
 
             case R.id.undo:
                 currentDive.remove(currentDive.size()-1);
@@ -321,22 +384,22 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                 diveData.setText(diveDatas);
                 break;
 
-            case R.id.buttonDone:
+            /*case R.id.buttonDone:
                 // collect any data entered
                 // save?
+                diveDoneListener.OnDiveCompleted();
                 // move to the results screen
-                break;
+                break;*/
 
             default:
                 throw new RuntimeException("Unknown Button");
         }
     }
 
-    public interface OnFragmentInteractionListener {
-
-    }
-
     public void checkSIT(){
+        int newSIT[] = new int [4];
+        int j = 0;
+        boolean update = false;
         for (int i=0; i<currentDive.size()-1; i++){
             if(currentDive.get(i).isSIT && currentDive.get(i+1).isSIT){
                 Dive combine = new Dive();
@@ -347,9 +410,16 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                 currentDive.remove(i+1);
                 currentDive.remove(i);
 
+                newSIT[j++] = (int) combine.bottomTime;
+                update = true;
+
                 currentDive.add(combine);
+            } else if (currentDive.get(i).isSIT) {
+                newSIT[j++] = (int) currentDive.get(i).bottomTime;
             }
         }
+        if (update)
+            updateSIT.OnUpdateSIT(newSIT);
     }
 
 }

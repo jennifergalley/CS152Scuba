@@ -29,6 +29,7 @@ public class DiveOperations {
 
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
+        dbHelper.onCreate(database);
     }
 
     public void close() {
@@ -46,7 +47,6 @@ public class DiveOperations {
 
         long diveId = database.insert(DataBaseWrapper.DIVES, null, values);
 
-        // now that the student is created return it ...
         Cursor cursor = database.query(DataBaseWrapper.DIVES,
                 DIVE_TABLE_COLUMNS, DataBaseWrapper.DIVE_ID + " = "
                         + diveId, null, null, null, null);

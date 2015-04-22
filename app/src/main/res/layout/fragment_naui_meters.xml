@@ -27,7 +27,7 @@
             android:id="@+id/diveData"
             android:layout_toEndOf="@id/textView6"
             android:layout_alignBaseline="@+id/textView6"
-            android:text="..."
+            android:text=""
             android:layout_marginLeft="5dp" />
     </RelativeLayout>
 
@@ -73,7 +73,7 @@
             android:layout_toRightOf="@+id/textView8"
             android:layout_toEndOf="@+id/textView"
             android:linksClickable="true"
-            android:hint="@string/depth_hint"
+            android:hint="Meters"
             android:layout_alignBaseline="@+id/textView"
             android:layout_alignParentEnd="false"
             android:layout_alignParentRight="true" />
@@ -112,13 +112,13 @@
             android:layout_toEndOf="@+id/textView2"
             android:layout_alignBaseline="@+id/textView2"
             android:layout_alignParentRight="true"
-            android:hint="@string/enterBottom" />
+            android:hint="Minutes" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/pressureLetter"
+            android:text="N/A"
             android:id="@+id/pressureGroup"
             android:layout_toRightOf="@+id/textView8"
             android:layout_toEndOf="@+id/textView3"
@@ -166,7 +166,7 @@
             android:layout_alignBaseline="@+id/textView8"
             android:layout_toEndOf="@+id/textView8"
             android:layout_alignParentRight="true"
-            android:hint="Add SIT..."
+            android:hint="Minutes"
             android:singleLine="false"
             android:inputType="number" />
 
