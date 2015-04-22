@@ -44,9 +44,11 @@ public class FullDive {
     public String toString() {
         String toPrint = "";
         for (int i = 0; i < listOfSingleDives.length; i++) {
-            toPrint += listOfSingleDives[i].toString();
-            if (i < listOfSingleDives.length - 1) {
-                toPrint += "\nSurface Interval Time: " + SIT[i] + "\n";
+            if (listOfSingleDives[i] != null) {
+                toPrint += listOfSingleDives[i].toString();
+                if (i < listOfSingleDives.length - 1) {
+                    toPrint += "\nSurface Interval Time: " + SIT[i] + "\n";
+                }
             }
         }
         return toPrint;

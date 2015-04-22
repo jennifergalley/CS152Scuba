@@ -7,6 +7,7 @@ package com.example.john.divesafe;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DataBaseWrapper extends SQLiteOpenHelper {
 
@@ -37,27 +38,30 @@ public class DataBaseWrapper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // creation SQLite statement
-    private static final String DATABASE_CREATE =
-            "create table " + FULL_DIVE
-                    + "(" + FULL_DIVE_ID + " integer primary key autoincrement, "
-                    + FULL_DIVE_DIVE1 + " integer not null,"
-                    + FULL_DIVE_DIVE2 + " integer,"
-                    + FULL_DIVE_DIVE3 + " integer,"
-                    + FULL_DIVE_DIVE4 + " integer,"
-                    + FULL_DIVE_DIVE5 + " integer,"
-                    + FULL_DIVE_SIT1 + " integer,"
-                    + FULL_DIVE_SIT2 + " integer,"
-                    + FULL_DIVE_SIT3 + " integer,"
-                    + FULL_DIVE_SIT4 + " integer); "
-            + "create table " + DIVES
-            + "(" + DIVE_ID + " integer primary key autoincrement, "
+    private static final String FULL_DIVE_CREATE =
+            "create table if not exists " + FULL_DIVE
+            + "(" + FULL_DIVE_ID + " integer primary key autoincrement, "
+            + FULL_DIVE_DIVE1 + " integer not null,"
+            + FULL_DIVE_DIVE2 + " integer,"
+            + FULL_DIVE_DIVE3 + " integer,"
+            + FULL_DIVE_DIVE4 + " integer,"
+            + FULL_DIVE_DIVE5 + " integer,"
+            + FULL_DIVE_SIT1 + " integer,"
+            + FULL_DIVE_SIT2 + " integer,"
+            + FULL_DIVE_SIT3 + " integer,"
+            + FULL_DIVE_SIT4 + " integer); ";
+    private static final String DIVE_CREATE =
+            "create table if not exists " + DIVES
+                    + "(" + DIVE_ID + " integer primary key autoincrement, "
                     + DIVE_DEPTH + " integer not null,"
                     + DIVE_BTIME + " integer not null,"
                     + DIVE_PGROUP + " text not null,"
-                    + DIVE_DTIME + " integer); "
-            + "create table " + DIVERS
-            + "(" + DIVER_ID + " integer primary key autoincrement, "
+                    + DIVE_DTIME + " integer); ";
+    private static final String DIVER_CREATE =
+            "create table if not exists " + DIVERS
+                    + "(" + DIVER_ID + " integer primary key autoincrement, "
                     + DIVER_NAME + " text not null);";
+
 
     public DataBaseWrapper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -65,8 +69,10 @@ public class DataBaseWrapper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-        db.execSQL(DATABASE_CREATE);
+        //execSQL does not support multiple statements separated by ;
+        db.execSQL(DIVE_CREATE);
+        db.execSQL(DIVER_CREATE);
+        db.execSQL(FULL_DIVE_CREATE);
     }
 
     @Override

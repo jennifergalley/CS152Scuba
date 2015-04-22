@@ -37,5 +37,6 @@
     <string name="title_activity_results_screen">ResultsScreenActivity</string>
     <string name="result">Your Dive Outline</string>
     <string name="diveOverview">Dive Overview</string>
+    <string name="title_activity_show_saved_dive">ShowSavedDive</string>
 
 </resources>

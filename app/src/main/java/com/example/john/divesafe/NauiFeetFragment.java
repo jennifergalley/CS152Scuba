@@ -43,6 +43,8 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
 
     private OnDoneButtonListener mListener;
 
+    private DiveOperations diveDBoperation;
+
 
     public static NauiFeetFragment newInstance() {
         NauiFeetFragment fragment = new NauiFeetFragment();
@@ -56,6 +58,10 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Activity a = getActivity();
+        diveDBoperation = new DiveOperations(a);
+        diveDBoperation.open();
     }
 
     @Override
@@ -215,7 +221,7 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                         decompressStop.setText("15 Ft for "+ Integer.toString(decompressTime)+" Min");
                     }
 
-                    if(!TextUtils.isEmpty(Sit.getText())) {
+                    if(!TextUtils.isEmpty(Sit.getText())){
                         double surfaceTime = 0;
                         try {
                             surfaceTime = Double.parseDouble(Sit.getText().toString());
