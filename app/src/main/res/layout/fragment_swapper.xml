@@ -21,13 +21,6 @@
         <Spinner
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/NP"
-            android:layout_weight=".50"
-            android:spinnerMode="dropdown" />
-
-        <Spinner
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:id="@+id/FM"
             android:layout_weight=".50"
             android:spinnerMode="dropdown" />

@@ -6,8 +6,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        >
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".DiveSafeActivity"
             android:label="@string/app_name" >
@@ -17,7 +16,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".SaveDiver"
             android:label="@string/title_activity_save_diver" >
@@ -29,6 +27,10 @@
         <activity
             android:name=".SaveFullDive"
             android:label="@string/title_activity_save_full_dive" >
+        </activity>
+        <activity
+            android:name=".ResultsScreenActivity"
+            android:label="@string/title_activity_results_screen" >
         </activity>
     </application>
 

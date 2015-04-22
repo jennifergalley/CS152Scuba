@@ -1,9 +1,45 @@
 package com.example.john.divesafe;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by john on 4/9/15.
  */
-public class Dive {
+public class Dive implements Parcelable{
     public double depth,bottomTime;
-    public boolean isSIT = false;
+    public boolean isSIT;
+
+    public Dive() {
+        depth = 0;
+        bottomTime = 0;
+        isSIT = false;
+    }
+
+    public Dive(Parcel in){
+        depth = in.readDouble();
+        bottomTime = in.readDouble();
+        isSIT = in.readByte() != 0;
+    }
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel dest, int flags){
+        dest.writeDouble(depth);
+        dest.writeDouble(bottomTime);
+        dest.writeByte((byte) (isSIT ? 1 : 0));
+    }
+
+    public static final Parcelable.Creator<Dive> CREATOR = new Parcelable.Creator<Dive>()
+    {
+        public Dive createFromParcel(Parcel in)
+        {
+            return new Dive(in);
+        }
+        public Dive[] newArray(int size)
+        {
+            return new Dive[size];
+        }
+    };
 }

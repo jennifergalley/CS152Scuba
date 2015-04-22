@@ -1,17 +1,27 @@
 package com.example.john.divesafe;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
 
-public class ResultsScreenActivity extends ActionBarActivity {
+
+public class ResultsScreenActivity extends Activity {
+    public ArrayList<Dive> currentDive = new ArrayList<Dive>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Recieve Data
         setContentView(R.layout.activity_results_screen);
+        Bundle bundle = getIntent().getExtras();
+
+        //Current Dive now has values from previous Activity
+        currentDive = bundle.getParcelableArrayList("diveList");
     }
 
     @Override

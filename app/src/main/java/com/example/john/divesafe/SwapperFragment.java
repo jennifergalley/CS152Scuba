@@ -27,7 +27,7 @@ public class SwapperFragment extends Fragment {
 
     private OnSwapListener mListener;
 
-    private Spinner npSpin, fmSpin;
+    private Spinner fmSpin;
 
     // TODO: Rename and change types and number of parameters
     public static SwapperFragment newInstance(String param1, String param2) {
@@ -53,34 +53,13 @@ public class SwapperFragment extends Fragment {
         // Inflate the layout for this fragment
         Log.d("SF","Layout Inflate");
         View view = inflater.inflate(R.layout.fragment_swapper, container, false);
-        npSpin = (Spinner) view.findViewById(R.id.NP);
-        fmSpin = (Spinner) view.findViewById(R.id.FM);
 
-        ArrayAdapter<CharSequence> NPadapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
-                R.array.NP_array, android.R.layout.simple_spinner_item);
+        fmSpin = (Spinner) view.findViewById(R.id.FM);
         ArrayAdapter<CharSequence> FMadapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
                 R.array.FM_array, android.R.layout.simple_spinner_item);
-
-        NPadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         FMadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        npSpin.setAdapter(NPadapter);
         fmSpin.setAdapter(FMadapter);
-
-        npSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView adapter, View v, int i, long lng) {
-
-                table =  adapter.getItemAtPosition(i).toString();
-                mListener.onSwap(measure, table);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView)
-            {
-
-            }
-        });
 
         fmSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
