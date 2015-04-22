@@ -14,7 +14,8 @@ import android.widget.EditText;
 public class DiveSafeActivity extends Activity
         implements NauiFeetFragment.OnDoneButtonListener, SwapperFragment.OnSwapListener,
         NauiMetersFragment.OnDiveCompletedListener, NauiMetersFragment.OnDiveAddedListener,
-        NauiMetersFragment.OnUpdateSITListener{
+        NauiMetersFragment.OnUpdateSITListener, NauiFeetFragment.OnDiveAddedListener,
+        NauiFeetFragment.OnDiveCompletedListener, NauiFeetFragment.OnUpdateSITListener {
 
     private int diveIDs[] = new int[5];
     private int diveIDIndex = 0;

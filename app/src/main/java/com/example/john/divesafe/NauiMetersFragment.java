@@ -26,16 +26,16 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class NauiMetersFragment extends Fragment implements View.OnClickListener {
-
-    private OnDiveAddedListener mListener;
-    private OnDiveCompletedListener diveDoneListener;
-    public List<Dive> currentDive = new ArrayList<Dive>();
+    public ArrayList<Dive> currentDive = new ArrayList<Dive>();
     private EditText depthNum, bottomNum;
     private TextView pressureGroup, diveData, decompressStop, Sit;
     private Button buttonDone;
     private Button buttonUndo;
     private Button buttonAdd;
+
     private OnUpdateSITListener updateSIT;
+    private OnDiveAddedListener diveAddedListener;
+    private OnDiveCompletedListener diveDoneListener;
 
     private DiveOperations diveDBoperation;
 
@@ -79,6 +79,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_naui_meters, container, false);
+
         depthNum = (EditText) view.findViewById(R.id.depthNum);
         bottomNum = (EditText) view.findViewById(R.id.bottomNum);
         Sit = (EditText) view.findViewById(R.id.SIT);
@@ -97,7 +98,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
+        if (diveAddedListener != null) {
         }
         if (diveDoneListener != null) {
         }
@@ -109,7 +110,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnDiveAddedListener) activity;
+            diveAddedListener = (OnDiveAddedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnDiveAddedListener");
@@ -131,7 +132,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        diveAddedListener = null;
         diveDoneListener = null;
         updateSIT = null;
     }
@@ -264,7 +265,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                     int diveID = sd.getId();
 
                     //save single dive id and surface interval time if exists, or 0 if not
-                    mListener.OnDiveAdded(diveID, surfaceTime);
+                    diveAddedListener.OnDiveAdded(diveID, surfaceTime);
 
                     checkSIT();
 
@@ -367,11 +368,10 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         int duration = Toast.LENGTH_LONG;
                         Toast toast = Toast.makeText(getActivity(), text, duration);
                         toast.show();
-                        break;
                     } else {
                         diveDoneListener.OnDiveCompleted();
-                        break;
                     }
+                    break;
                 }
 
             case R.id.undo:
