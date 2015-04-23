@@ -93,8 +93,7 @@ public class ShowSavedDive extends Activity {
             List values = fullDiveDBoperation.merge(dives);
 
             for (int i = 0; i < values.size(); i++) {
-                FullDive d = new FullDive ();
-                d = (FullDive) values.get(i);
+                FullDive d = (FullDive) values.get(i);
                 if (d.getId() == diveID) {
                     currentDive = d;
                     break;

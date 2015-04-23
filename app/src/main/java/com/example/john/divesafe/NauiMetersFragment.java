@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class NauiMetersFragment extends Fragment implements View.OnClickListener {
     public ArrayList<Dive> currentDive = new ArrayList<Dive>();
-    private EditText depthNum, bottomNum;
+    private EditText depthNum, bottomNum, diveName;
     private TextView pressureGroup, diveData, decompressStop, Sit;
     private Button buttonDone;
     private Button buttonUndo;
@@ -60,7 +60,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
     }
 
     public interface OnDiveCompletedListener {
-        public void OnDiveCompleted();
+        public void OnDiveCompleted(String name);
     }
 
     @Override
@@ -80,6 +80,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_naui_meters, container, false);
 
+        diveName = (EditText) view.findViewById(R.id.diveName);
         depthNum = (EditText) view.findViewById(R.id.depthNum);
         bottomNum = (EditText) view.findViewById(R.id.bottomNum);
         Sit = (EditText) view.findViewById(R.id.SIT);
@@ -290,7 +291,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                     }
 
                     if (view.getId() == R.id.buttonDone) {
-                        diveDoneListener.OnDiveCompleted();
+                        diveDoneListener.OnDiveCompleted(diveName.getText().toString());
                     }
                     break;
 
@@ -357,7 +358,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         Sit.setText("");
 
                         if (view.getId() == R.id.buttonDone) {
-                            diveDoneListener.OnDiveCompleted();
+                            diveDoneListener.OnDiveCompleted(diveName.getText().toString());
                         }
                         break;
                     }
@@ -369,7 +370,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         Toast toast = Toast.makeText(getActivity(), text, duration);
                         toast.show();
                     } else {
-                        diveDoneListener.OnDiveCompleted();
+                        diveDoneListener.OnDiveCompleted(diveName.getText().toString());
                     }
                     break;
                 }

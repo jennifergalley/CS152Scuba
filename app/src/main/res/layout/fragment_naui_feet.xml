@@ -36,13 +36,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/depth"
-            android:id="@+id/textView"
+            android:text="Dive Name:"
+            android:id="@+id/nameDive"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:gravity="bottom"
             android:textAlignment="gravity"
             android:layout_below="@+id/Title"
+            android:layout_marginTop="10dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:ems="10"
+            android:id="@+id/diveName"
+            android:layout_toRightOf="@+id/textView8"
+            android:layout_toEndOf="@+id/nameDive"
+            android:linksClickable="true"
+            android:hint="Name"
+            android:layout_alignBaseline="@+id/nameDive"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentRight="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/depth"
+            android:id="@+id/textView"
+            android:gravity="bottom"
+            android:textAlignment="gravity"
+            android:layout_below="@+id/nameDive"
             android:layout_marginTop="10dp" />
 
         <EditText

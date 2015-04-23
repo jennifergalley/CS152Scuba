@@ -24,6 +24,7 @@ public class DataBaseWrapper extends SQLiteOpenHelper {
 
     public static final String FULL_DIVE = "FullDive";
     public static final String FULL_DIVE_ID = "_id";
+    public static final String FULL_DIVE_NAME = "_name";
     public static final String FULL_DIVE_DIVE1 = "_dive1";
     public static final String FULL_DIVE_DIVE2 = "_dive2";
     public static final String FULL_DIVE_DIVE3 = "_dive3";
@@ -41,6 +42,7 @@ public class DataBaseWrapper extends SQLiteOpenHelper {
     private static final String FULL_DIVE_CREATE =
             "create table if not exists " + FULL_DIVE
             + "(" + FULL_DIVE_ID + " integer primary key autoincrement, "
+            + FULL_DIVE_NAME + " text not null,"
             + FULL_DIVE_DIVE1 + " integer not null,"
             + FULL_DIVE_DIVE2 + " integer,"
             + FULL_DIVE_DIVE3 + " integer,"
@@ -79,7 +81,7 @@ public class DataBaseWrapper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // you should do some logging in here
         // ..
-
+        Log.d("DB ", "Database upgraded");
         db.execSQL("DROP TABLE IF EXISTS " + DIVERS);
         db.execSQL("DROP TABLE IF EXISTS " + DIVES);
         db.execSQL("DROP TABLE IF EXISTS " + FULL_DIVE);

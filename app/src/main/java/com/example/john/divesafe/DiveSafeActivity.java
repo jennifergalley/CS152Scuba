@@ -17,12 +17,14 @@ public class DiveSafeActivity extends Activity
         NauiMetersFragment.OnUpdateSITListener, NauiFeetFragment.OnDiveAddedListener,
         NauiFeetFragment.OnDiveCompletedListener, NauiFeetFragment.OnUpdateSITListener {
 
+    private String diveName;
     private int diveIDs[] = new int[5];
     private int diveIDIndex = 0;
     private int SITs[] = new int[4];
     private int SITIndex = 0;
     private FullDive fd;
     private FullDiveOperations fullDiveDBoperation;
+
 
     public void addDiveID (int diveID) {
         diveIDs[diveIDIndex] = diveID;
@@ -43,8 +45,9 @@ public class DiveSafeActivity extends Activity
         addSIT (SIT);
     }
 
-    public void OnDiveCompleted () {
-        fd = fullDiveDBoperation.addFullDive(diveIDs, SITs);
+    public void OnDiveCompleted (String name) {
+        diveName = name;
+        fd = fullDiveDBoperation.addFullDive(diveName, diveIDs, SITs);
 
         Intent intent = new Intent(DiveSafeActivity.this, ShowSavedDive.class);
         Bundle b = new Bundle();

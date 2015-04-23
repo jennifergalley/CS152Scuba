@@ -18,7 +18,8 @@ public class FullDiveOperations extends DiveOperations {
     private DataBaseWrapper dbHelper;
 
     private String[] FULL_DIVE_TABLE_COLUMNS = {
-            DataBaseWrapper.FULL_DIVE_ID, DataBaseWrapper.FULL_DIVE_DIVE1,
+            DataBaseWrapper.FULL_DIVE_ID,
+            DataBaseWrapper.FULL_DIVE_NAME, DataBaseWrapper.FULL_DIVE_DIVE1,
             DataBaseWrapper.FULL_DIVE_DIVE2, DataBaseWrapper.FULL_DIVE_DIVE3,
             DataBaseWrapper.FULL_DIVE_DIVE4, DataBaseWrapper.FULL_DIVE_DIVE5,
             DataBaseWrapper.FULL_DIVE_SIT1, DataBaseWrapper.FULL_DIVE_SIT2,
@@ -32,15 +33,18 @@ public class FullDiveOperations extends DiveOperations {
 
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
+//        dbHelper.onUpgrade(database, 1, 2);
     }
 
     public void close() {
         dbHelper.close();
     }
 
-    public FullDive addFullDive (int[] diveIDs, int[] sit) {
+    public FullDive addFullDive (String diveName, int[] diveIDs, int[] sit) {
 
         ContentValues values = new ContentValues();
+
+        values.put(DataBaseWrapper.FULL_DIVE_NAME, diveName);
 
         values.put(DataBaseWrapper.FULL_DIVE_DIVE1, diveIDs[0]);
         if (diveIDs[1] != -1)
@@ -63,7 +67,6 @@ public class FullDiveOperations extends DiveOperations {
 
         long fullDiveId = database.insert(DataBaseWrapper.FULL_DIVE, null, values);
 
-        // now that the student is created return it ...
         Cursor cursor = database.query(DataBaseWrapper.FULL_DIVE,
                 FULL_DIVE_TABLE_COLUMNS, DataBaseWrapper.FULL_DIVE_ID + " = "
                         + fullDiveId, null, null, null, null);
@@ -120,16 +123,20 @@ public class FullDiveOperations extends DiveOperations {
     private FullDive parseDive(Cursor cursor) {
         FullDive fullDive = new FullDive();
         fullDive.setId((cursor.getInt(0)));
+        fullDive.setName((cursor.getString(1)));
+        int diveIndex = 2;
+        int sitIndex = 7;
+        int end = 11;
         // cursor.getInt(1) will be dive1 id, etc
         int dives[] = new int [5];
-        for (int i = 1; i < 6 && !cursor.isNull(i); i++) {
-            dives[i-1] = cursor.getInt(i);
+        for (int i = diveIndex; i < sitIndex && !cursor.isNull(i); i++) {
+            dives[i-diveIndex] = cursor.getInt(i);
         }
         fullDive.setDives(dives);
 
         int sit[] = new int [4];
-        for (int i = 6; i < 10 && !cursor.isNull(i); i++) {
-            sit[i-6] = cursor.getInt(i);
+        for (int i = sitIndex; i < end && !cursor.isNull(i); i++) {
+            sit[i-sitIndex] = cursor.getInt(i);
         }
         fullDive.setSIT(sit);
 
@@ -139,14 +146,18 @@ public class FullDiveOperations extends DiveOperations {
     private FullDive parseDive(Cursor cursor, List<SingleDive> d) {
         FullDive fullDive = new FullDive();
         fullDive.setId((cursor.getInt(0)));
+        fullDive.setName((cursor.getString(1)));
+        int diveIndex = 2;
+        int sitIndex = 7;
+        int end = 11;
         // cursor.getInt(1) will be dive1 id, etc
         int dives[] = new int [5];
         SingleDive[] singleDiveList = new SingleDive[5];
-        for (int i = 1; i < 6 && !cursor.isNull(i); i++) {
-            dives[i-1] = cursor.getInt(i);
+        for (int i = diveIndex; i < sitIndex && !cursor.isNull(i); i++) {
+            dives[i-diveIndex] = cursor.getInt(i);
             for (int j = 0; j < d.size(); j++) {
-                if (d.get(j).getId() == dives[i-1]) {
-                    singleDiveList[i-1] = d.get(j);
+                if (d.get(j).getId() == dives[i-diveIndex]) {
+                    singleDiveList[i-diveIndex] = d.get(j);
                 }
             }
         }
@@ -154,8 +165,8 @@ public class FullDiveOperations extends DiveOperations {
         fullDive.setListOfSingleDives(singleDiveList);
 
         int sit[] = new int [4];
-        for (int i = 6; i < 10 && !cursor.isNull(i); i++) {
-            sit[i-6] = cursor.getInt(i);
+        for (int i = sitIndex; i < end && !cursor.isNull(i); i++) {
+            sit[i-sitIndex] = cursor.getInt(i);
         }
         fullDive.setSIT(sit);
 

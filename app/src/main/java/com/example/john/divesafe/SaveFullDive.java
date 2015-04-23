@@ -41,6 +41,9 @@ public class SaveFullDive extends ListActivity {
         EditText pgroup[] = new EditText[5];
         EditText dtime[] = new EditText[5];
         EditText sit[] = new EditText[4];
+        EditText name;
+
+        name = (EditText) findViewById(R.id.diveName);
 
         depth[0] = (EditText) findViewById(R.id.depth1);
         btime[0] = (EditText) findViewById(R.id.btime1);
@@ -96,7 +99,7 @@ public class SaveFullDive extends ListActivity {
             }
         }
 
-        FullDive fullDive = fullDiveDBoperation.addFullDive(diveIDs, sit_arr);
+        FullDive fullDive = fullDiveDBoperation.addFullDive(name.getText().toString(), diveIDs, sit_arr);
 
         adapter.add(fullDive);
 

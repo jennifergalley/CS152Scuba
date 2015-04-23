@@ -8,41 +8,46 @@ public class FullDive {
     // private String name;
     // private boolean feet; //true if in feet, false if in meters
     // private boolean naui; //true if naui table, false if padi
+    private String name;
     private int dives[];
     private int SIT[];
     private SingleDive listOfSingleDives[];
+
+    public String getName () { return name; }
+
+    public void setName (String n) { name = n; }
 
     public long getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int i) {
+        id = i;
     }
 
     public int[] getDives() {
-        return this.dives;
+        return dives;
     }
 
     public void setDives(int[] d) {
-        this.dives = d;
+        dives = d;
     }
 
     public int[] getSIT() {
-        return this.SIT;
+        return SIT;
     }
 
     public void setSIT(int[] sit) {
-        this.SIT = sit;
+        SIT = sit;
     }
 
-    public void setListOfSingleDives(SingleDive[] d) { this.listOfSingleDives = d; }
+    public void setListOfSingleDives(SingleDive[] d) { listOfSingleDives = d; }
 
-    public SingleDive[] getListOfSingleDives() { return this.listOfSingleDives; }
+    public SingleDive[] getListOfSingleDives() { return listOfSingleDives; }
 
     @Override
     public String toString() {
-        String toPrint = "";
+        String toPrint = "Dive: " + name + "\n";
         for (int i = 0; i < listOfSingleDives.length; i++) {
             if (listOfSingleDives[i] != null) {
                 toPrint += listOfSingleDives[i].toString();

@@ -1,15 +1,14 @@
 package com.example.john.divesafe;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,7 +22,7 @@ import java.util.ArrayList;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple {@link android.app.Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link NauiFeetFragment.OnDoneButtonListener} interface
  * to handle interaction events.
@@ -35,7 +34,7 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
     public ArrayList<Dive> currentDive = new ArrayList<Dive>();
     ArrayList<DataPoint> dp = new ArrayList<DataPoint>();
     public LineGraphSeries series = new LineGraphSeries<>();
-    private EditText depthNum, bottomNum;
+    private EditText depthNum, bottomNum, diveName;
     private TextView pressureGroup, decompressStop, Sit;
     private Button buttonDone;
     private Button buttonUndo;
@@ -66,11 +65,11 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
     }
 
     public interface OnUpdateSITListener {
-        public void OnUpdateSIT (int SIT[]);
+        public void OnUpdateSIT(int SIT[]);
     }
 
     public interface OnDiveCompletedListener {
-        public void OnDiveCompleted();
+        public void OnDiveCompleted(String name);
     }
 
     @Override
@@ -90,6 +89,7 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_naui_feet, container, false);
 
+        diveName = (EditText) view.findViewById(R.id.diveName);
         depthNum = (EditText) view.findViewById(R.id.depthNum);
         bottomNum = (EditText) view.findViewById(R.id.bottomNum);
         Sit = (EditText) view.findViewById(R.id.SIT);
@@ -338,7 +338,7 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                         for (int i = 0; i < currentDive.size(); i++) {
                             if (i != 0) {
                                 dp.add(new DataPoint(currentDive.get(i - 1).bottomTime, currentDive.get(i).depth));
-                                Log.d ("DSA ", " curr bottom time is: " + currentDive.get(i).bottomTime);
+                                Log.d("DSA ", " curr bottom time is: " + currentDive.get(i).bottomTime);
                                 currentDive.get(i).bottomTime = currentDive.get(i).bottomTime + currentDive.get(i - 1).bottomTime;
                                 Log.d ("DSA ", " new bottom time is: " + currentDive.get(i).bottomTime);
                                 dp.add(new DataPoint(currentDive.get(i).bottomTime, currentDive.get(i).depth));
@@ -356,12 +356,12 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                         series.resetData(dp.toArray(new DataPoint[dp.size()]));
                         dp.clear();
                         graph.addSeries(series);
-                            Sit.setText("");
+                        Sit.setText("");
                     }
                     checkSIT();
 
                     if (view.getId() == R.id.buttonDone) {
-                        diveDoneListener.OnDiveCompleted();
+                        diveDoneListener.OnDiveCompleted(diveName.getText().toString());
                     }
                     break;
 
@@ -439,7 +439,7 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                         checkSIT(); //combine SIT times if they are left next to one another. so RNT calculates correctly
 
                         if (view.getId() == R.id.buttonDone) {
-                            diveDoneListener.OnDiveCompleted();
+                            diveDoneListener.OnDiveCompleted(diveName.getText().toString());
                         }
                         break;
                     }
@@ -450,7 +450,7 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                         Toast toast = Toast.makeText(getActivity(), text, duration);
                         toast.show();
                     } else {
-                        diveDoneListener.OnDiveCompleted();
+                        diveDoneListener.OnDiveCompleted(diveName.getText().toString());
                     }
                     break;
                 }
