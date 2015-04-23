@@ -102,6 +102,23 @@ public class FullDiveOperations extends DiveOperations {
         return dives;
     }
 
+    public List getAllDiveNames() {
+        List dives = new ArrayList();
+//        dbHelper.onCreate(database);
+        Cursor cursor = database.query(DataBaseWrapper.FULL_DIVE,
+                FULL_DIVE_TABLE_COLUMNS, null, null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            FullDive fullDive = parseDive(cursor);
+            dives.add(fullDive.getName());
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        return dives;
+    }
+
     public List merge (List<SingleDive> d) {
         List dives = new ArrayList();
 //        dbHelper.onCreate(database);

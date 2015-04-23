@@ -36,6 +36,10 @@
             android:name=".ShowSavedDive"
             android:label="@string/title_activity_show_saved_dive" >
         </activity>
+        <activity
+            android:name=".ViewDives"
+            android:label="@string/title_activity_view_dives" >
+        </activity>
     </application>
 
 </manifest>
