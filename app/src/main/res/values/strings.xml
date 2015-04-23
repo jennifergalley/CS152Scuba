@@ -38,5 +38,6 @@
     <string name="result">Your Dive Outline</string>
     <string name="diveOverview">Dive Overview</string>
     <string name="title_activity_show_saved_dive">ShowSavedDive</string>
+    <string name="pressureLetter2">N/A</string>
 
 </resources>

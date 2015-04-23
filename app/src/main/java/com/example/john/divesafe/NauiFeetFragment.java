@@ -171,7 +171,7 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                     reqSIT.isSIT = true;
                     currentDive.add(reqSIT);
                 }
-
+                checkSIT();
                 if(!(TextUtils.isEmpty(depthNum.getText()) | TextUtils.isEmpty(bottomNum.getText()))) {
 
                     try {
@@ -228,6 +228,7 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                             decompressTime = DT.decompressionStopMinutesRepetitiveDiveFeet(PG, (int) currentDive.get(i).depth, (int) currentDive.get(i).bottomTime);
 
                         }
+
                         if (PG == '1' || decompressTime == -1) {
                             depthNum.setText("");
                             bottomNum.setText("");
@@ -254,18 +255,6 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                             decompressTime);
                     int diveID = sd.getId();
 
-                    //update the display for the user
-                   /* String diveDataString = "";
-                    for(int i=0; i<currentDive.size();i++){
-                        if(currentDive.get(i).isSIT){
-                            diveDataString += ("(Surface " + ",T: " + Double.toString(currentDive.get(i).bottomTime) + ")");
-                            if(i!=currentDive.size()-1){diveDataString += ", ";}
-                            continue;
-                        }
-
-                        diveDataString += ("(D: "+Double.toString(currentDive.get(i).depth) + ",T: " + Double.toString(currentDive.get(i).bottomTime) + ")");
-                        if(i!=currentDive.size()-1){diveDataString += ", ";}
-                    }*/
 
                     pressureGroup.setText(Character.toString(PG));
 
@@ -331,6 +320,7 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                         sitDive.bottomTime = surfaceTime;
                         sitDive.isSIT = true;
 
+                        pressureGroup.setText(Character.toString(newPG));
                         //add to curdive
                         currentDive.add(sitDive);
 
@@ -363,7 +353,7 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                         graph.addSeries(series);
                         Sit.setText("");
                     }
-                    checkSIT();
+
 
                     if (view.getId() == R.id.buttonDone) {
                         diveDoneListener.OnDiveCompleted(diveName.getText().toString());
@@ -374,6 +364,7 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                     if(!TextUtils.isEmpty(Sit.getText()) && currentDive.size() >= 1 && (TextUtils.isEmpty(depthNum.getText()) && TextUtils.isEmpty(bottomNum.getText()))){
                         //add in the SIT
                         int surfaceTime = 0;
+                        char PG;
                         try{
                             surfaceTime = Integer.parseInt(Sit.getText().toString());
                         }catch (NumberFormatException e){
@@ -381,25 +372,6 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                             int duration = Toast.LENGTH_LONG;
                             Toast toast = Toast.makeText(getActivity(), text, duration);
                             toast.show();
-                        }
-
-                        char PG = pressureGroup.getText().charAt(0);
-                        Log.d("NFF ", "PG: "+PG);
-                        char newPG = DT.getLetterGroupSurfaceIntervalTime(PG, surfaceTime);
-
-                        if(newPG == '2'){
-                            CharSequence text = "Error: Wait time is above 24 Hours";
-                            int duration = Toast.LENGTH_LONG;
-                            Toast toast = Toast.makeText(getActivity(), text, duration);
-                            toast.show();
-                            Sit.setText("");
-                        }
-                        if(newPG == '1'){
-                            CharSequence text = "Error: Wait time must be above 10 Minutes";
-                            int duration = Toast.LENGTH_LONG;
-                            Toast toast = Toast.makeText(getActivity(), text, duration);
-                            toast.show();
-                            Sit.setText("");
                         }
 
                         Dive sitDive = new Dive();
@@ -413,14 +385,46 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
 
                         currentDive.add(sitDive);
 
-                        Log.d("NFF ", "newPG: " + newPG);
-                        //display PG
-                        pressureGroup.setText(Character.toString(newPG));
-
                         //display curDive
                         double tottime  = 0;
+
                         //Add data to the Graph!
                         checkSIT();
+                        PG = DT.getLetterGroupFirstDiveFeet((int) currentDive.get(0).depth, (int) currentDive.get(0).bottomTime );
+                        Log.d("NFF ", "PG: " + PG);
+                        Log.d("NFF ", "BT0: " + (int) currentDive.get(0).bottomTime);
+                        if (currentDive.size() > 1) {
+                            for (int i = 1; i < currentDive.size(); i++) {
+                                if (currentDive.get(i).isSIT) {
+                                    PG = DT.getLetterGroupSurfaceIntervalTime(PG, (int) currentDive.get(i).bottomTime);
+                                    Log.d("NFF ", "PG: 2 " + Character.toString(PG));
+                                    Log.d("NFF ", "BTL: " + (int) currentDive.get(i).bottomTime);
+                                    continue;
+                                }
+
+                                PG = DT.getLetterGroupRepetitiveDiveFeet(PG, (int) currentDive.get(i).depth, (int) currentDive.get(i).bottomTime);
+                                Log.d("NFF ", "PG: L " + Character.toString(PG));
+                            }
+                        }
+
+                        if(PG == '2'){
+                            CharSequence text = "Error: Wait time is above 24 Hours";
+                            int duration = Toast.LENGTH_LONG;
+                            Toast toast = Toast.makeText(getActivity(), text, duration);
+                            toast.show();
+                            Sit.setText("");
+                        }
+                        if(PG == '1'){
+                            CharSequence text = "Error: Wait time must be above 10 Minutes";
+                            int duration = Toast.LENGTH_LONG;
+                            Toast toast = Toast.makeText(getActivity(), text, duration);
+                            toast.show();
+                            Sit.setText("");
+                        }
+
+                        pressureGroup.setText(Character.toString(PG));
+
+
                         for (int i = 0; i < currentDive.size(); i++) {
                             if (i != 0) {
                                 dp.add(new DataPoint(tottime, currentDive.get(i).depth));
