@@ -13,6 +13,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,11 +32,14 @@ import java.util.List;
  */
 public class NauiMetersFragment extends Fragment implements View.OnClickListener {
     public ArrayList<Dive> currentDive = new ArrayList<Dive>();
+    ArrayList<DataPoint> dp = new ArrayList<DataPoint>();
+    public LineGraphSeries series = new LineGraphSeries<>();
     private EditText depthNum, bottomNum, diveName;
-    private TextView pressureGroup, diveData, decompressStop, Sit;
+    private TextView pressureGroup, decompressStop, Sit;
     private Button buttonDone;
     private Button buttonUndo;
     private Button buttonAdd;
+    private GraphView graph;
 
     private OnUpdateSITListener updateSIT;
     private OnDiveAddedListener diveAddedListener;
@@ -85,11 +93,11 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
         bottomNum = (EditText) view.findViewById(R.id.bottomNum);
         Sit = (EditText) view.findViewById(R.id.SIT);
         pressureGroup = (TextView) view.findViewById(R.id.pressureGroup);
-        diveData = (TextView) view.findViewById(R.id.diveData);
         decompressStop = (TextView) view.findViewById(R.id.decompressStop);
         buttonDone = (Button) view.findViewById(R.id.buttonDone);
         buttonUndo = (Button) view.findViewById(R.id.undo);
         buttonAdd = (Button) view.findViewById(R.id.buttonAdd);
+        graph = (GraphView) view.findViewById(R.id.graph);
 
         buttonDone.setOnClickListener(this);
         buttonAdd.setOnClickListener(this);
@@ -147,6 +155,15 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
         switch(view.getId()){
             case R.id.buttonAdd:
             case R.id.buttonDone:
+
+                if (currentDive.size() != 0){
+                    Dive reqSIT = new Dive();
+                    reqSIT.bottomTime = 10;
+                    reqSIT.depth = 0;
+                    reqSIT.isSIT = true;
+                    currentDive.add(reqSIT);
+                }
+
                 if(!(TextUtils.isEmpty(depthNum.getText()) | TextUtils.isEmpty(bottomNum.getText()))) {
 
                     try {
@@ -220,6 +237,43 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                     depthNum.setText("");
                     bottomNum.setText("");
 
+                    //add single dive to single dive table
+                    SingleDive sd = diveDBoperation.addDive((int) currentDive.get(diveNum).depth,
+                            (int) currentDive.get(diveNum).bottomTime, Character.toString(PG),
+                            decompressTime);
+                    int diveID = sd.getId();
+
+                    pressureGroup.setText(Character.toString(PG));
+
+                    //Add data to the Graph!
+                    checkSIT();
+                    double tottime  = 0;
+                    for (int i = 0; i < currentDive.size(); i++) {
+                        if (i != 0) {
+                            dp.add(new DataPoint(tottime, currentDive.get(i).depth));
+                            Log.d("DSA ", " curr bottom time is: " + currentDive.get(i).bottomTime);
+                            tottime = currentDive.get(i).bottomTime + tottime;
+                            Log.d ("DSA ", " new bottom time is: " + currentDive.get(i).bottomTime);
+                            dp.add(new DataPoint(tottime, currentDive.get(i).depth));
+                        } else {
+                            dp.add(new DataPoint(0, 0));
+                            dp.add(new DataPoint(0, currentDive.get(i).depth));
+                            dp.add(new DataPoint(currentDive.get(i).bottomTime, currentDive.get(i).depth));
+                            tottime = currentDive.get(i).bottomTime;
+                        }
+                    }
+                    if (currentDive.size() == 1) {
+                        dp.add(new DataPoint(currentDive.get(0).bottomTime, 0));
+                    }
+
+                    series.resetData(dp.toArray(new DataPoint[dp.size()]));
+                    dp.clear();
+                    graph.addSeries(series);
+
+                    if(decompressTime != 0){
+                        decompressStop.setText("15 Ft for "+ Integer.toString(decompressTime)+" Min");
+                    }
+
                     int surfaceTime = 0;
                     if(!TextUtils.isEmpty(Sit.getText())){
                         try{
@@ -256,38 +310,34 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         //add to curdive
                         currentDive.add(sitDive);
 
-                        Sit.setText(""); //blank surface interval time
-                    }
+                        //save single dive id and surface interval time if exists, or 0 if not
+                        diveAddedListener.OnDiveAdded(diveID, surfaceTime);
 
-                    //add single dive to single dive table
-                    SingleDive sd = diveDBoperation.addDive((int) currentDive.get(diveNum).depth,
-                            (int) currentDive.get(diveNum).bottomTime, Character.toString(PG),
-                            decompressTime);
-                    int diveID = sd.getId();
-
-                    //save single dive id and surface interval time if exists, or 0 if not
-                    diveAddedListener.OnDiveAdded(diveID, surfaceTime);
-
-                    checkSIT();
-
-                    //update the display for the user
-                    String diveDataString = "";
-                    for(int i=0; i<currentDive.size();i++){
-                        if(currentDive.get(i).isSIT){
-                            diveDataString += ("(Surface " + ",T: " + Double.toString(currentDive.get(i).bottomTime) + ")");
-                            if(i!=currentDive.size()-1){diveDataString += ", ";}
-                            continue;
+                        checkSIT();
+                        for (int i = 0; i < currentDive.size(); i++) {
+                            if (i != 0) {
+                                dp.add(new DataPoint(tottime, currentDive.get(i).depth));
+                                Log.d("DSA ", " curr bottom time is: " + currentDive.get(i).bottomTime);
+                                tottime = currentDive.get(i).bottomTime + tottime;
+                                Log.d ("DSA ", " new bottom time is: " + currentDive.get(i).bottomTime);
+                                dp.add(new DataPoint(tottime, currentDive.get(i).depth));
+                            } else {
+                                dp.add(new DataPoint(0, 0));
+                                dp.add(new DataPoint(0, currentDive.get(i).depth));
+                                dp.add(new DataPoint(currentDive.get(i).bottomTime, currentDive.get(i).depth));
+                                tottime = currentDive.get(i).bottomTime;
+                            }
                         }
 
-                        diveDataString += ("(D: "+Double.toString(currentDive.get(i).depth) + ",T: " + Double.toString(currentDive.get(i).bottomTime) + ")");
-                        if(i!=currentDive.size()-1){diveDataString += ", ";}
-                    }
-                    diveData.setText(diveDataString);
+                        if (currentDive.size() == 1) {
+                            dp.add(new DataPoint(currentDive.get(0).bottomTime, 0));
+                        }
 
-                    pressureGroup.setText(Character.toString(PG));
+                        series.resetData(dp.toArray(new DataPoint[dp.size()]));
+                        dp.clear();
+                        graph.addSeries(series);
 
-                    if(decompressTime != 0){
-                        decompressStop.setText("15 Ft for "+ Integer.toString(decompressTime)+" Min");
+                        Sit.setText(""); //blank surface interval time
                     }
 
                     if (view.getId() == R.id.buttonDone) {
@@ -299,6 +349,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                     if(!TextUtils.isEmpty(Sit.getText()) && currentDive.size() >= 1 && (TextUtils.isEmpty(depthNum.getText()) && TextUtils.isEmpty(bottomNum.getText()))){
                         //add in the SIT
                         int surfaceTime = 0;
+                        char PG;
                         try{
                             surfaceTime = Integer.parseInt(Sit.getText().toString());
                         }catch (NumberFormatException e){
@@ -313,16 +364,30 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         sitDive.bottomTime = surfaceTime;
                         sitDive.isSIT = true;
 
+                        if(currentDive.get(currentDive.size()-1).bottomTime == 10 && currentDive.get(currentDive.size()-1).isSIT)
+                            currentDive.remove(currentDive.size()-1);
+
                         //add to curdive
                         currentDive.add(sitDive);
                         checkSIT();
+                        PG = DT.getLetterGroupFirstDiveFeet((int) currentDive.get(0).depth, (int) currentDive.get(0).bottomTime );
+                        Log.d("NFF ", "PG: " + PG);
+                        Log.d("NFF ", "BT0: " + (int) currentDive.get(0).bottomTime);
+                        if (currentDive.size() > 1) {
+                            for (int i = 1; i < currentDive.size(); i++) {
+                                if (currentDive.get(i).isSIT) {
+                                    PG = DT.getLetterGroupSurfaceIntervalTime(PG, (int) currentDive.get(i).bottomTime);
+                                    Log.d("NFF ", "PG: 2 " + Character.toString(PG));
+                                    Log.d("NFF ", "BTL: " + (int) currentDive.get(i).bottomTime);
+                                    continue;
+                                }
 
-                        char PG = pressureGroup.getText().charAt(0);
-                        Log.d("NFF ", "PG: "+PG);
-                        char newPG = DT.getLetterGroupSurfaceIntervalTime(PG, surfaceTime);
-                        Log.d("NFF ", "newPG: "+newPG);
+                                PG = DT.getLetterGroupRepetitiveDiveFeet(PG, (int) currentDive.get(i).depth, (int) currentDive.get(i).bottomTime);
+                                Log.d("NFF ", "PG: L " + Character.toString(PG));
+                            }
+                        }
 
-                        if(newPG == '2'){
+                        if(PG == '2'){
                             CharSequence text = "Error: Wait time is above 24 Hours";
                             int duration = Toast.LENGTH_LONG;
                             Toast toast = Toast.makeText(getActivity(), text, duration);
@@ -330,7 +395,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                             Sit.setText ("");
                             break;
                         }
-                        if(newPG == '1'){
+                        if(PG == '1'){
                             CharSequence text = "Error: Wait time must be above 10 Minutes";
                             int duration = Toast.LENGTH_LONG;
                             Toast toast = Toast.makeText(getActivity(), text, duration);
@@ -340,22 +405,36 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         }
 
                         //display PG
-                        pressureGroup.setText(Character.toString(newPG));
+                        pressureGroup.setText(Character.toString(PG));
+
 
                         //display curDive
-                        String diveDataString = "";
-                        for(int i=0; i<currentDive.size();i++){
-                            if(currentDive.get(i).isSIT){
-                                diveDataString += ("(Surface " + ",T: " + Double.toString(currentDive.get(i).bottomTime) + ")");
-                                if(i!=currentDive.size()-1){diveDataString += ", ";}
-                                continue;
+                        double tottime  = 0;
+                        //Add data to the Graph!
+                        checkSIT();
+                        for (int i = 0; i < currentDive.size(); i++) {
+                            if (i != 0) {
+                                dp.add(new DataPoint(tottime, currentDive.get(i).depth));
+                                Log.d("DSA ", " curr bottom time is: " + currentDive.get(i).bottomTime);
+                                tottime = currentDive.get(i).bottomTime + tottime;
+                                Log.d ("DSA ", " new bottom time is: " + currentDive.get(i).bottomTime);
+                                dp.add(new DataPoint(tottime, currentDive.get(i).depth));
+                            } else {
+                                dp.add(new DataPoint(0, 0));
+                                dp.add(new DataPoint(0, currentDive.get(i).depth));
+                                dp.add(new DataPoint(currentDive.get(i).bottomTime, currentDive.get(i).depth));
+                                tottime = currentDive.get(i).bottomTime;
                             }
-
-                            diveDataString += ("(D: "+Double.toString(currentDive.get(i).depth) + ",T: " + Double.toString(currentDive.get(i).bottomTime) + ")");
-                            if(i!=currentDive.size()-1){diveDataString += ", ";}
                         }
-                        diveData.setText(diveDataString);
+                        if(currentDive.size() == 1){
+                            dp.add( new DataPoint(currentDive.get(0).bottomTime, 0));
+                        }
+
+                        series.resetData(dp.toArray(new DataPoint[dp.size()]));
+                        dp.clear();
+                        graph.addSeries(series);
                         Sit.setText("");
+                        checkSIT(); //combine SIT times if they are left next to one another. so RNT calculates correctly
 
                         if (view.getId() == R.id.buttonDone) {
                             diveDoneListener.OnDiveCompleted(diveName.getText().toString());
@@ -382,7 +461,6 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                     diveDatas += ("(D: "+Double.toString(currentDive.get(i).depth) + ",T: " + Double.toString(currentDive.get(i).bottomTime) + ")");
                     if(i!=currentDive.size()-1){diveDatas += ", ";}
                 }
-                diveData.setText(diveDatas);
                 break;
 
             /*case R.id.buttonDone:

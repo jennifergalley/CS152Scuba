@@ -1278,7 +1278,7 @@ public class PADIDiveTable {
 		int col;
 		boolean valid = false;
 		for (col = 0; col < 26; col++) {
-			if (minutes < surfaceIntervalTime[col][row].getMax()) {
+			if (minutes <= surfaceIntervalTime[col][row].getMax()) {
 				valid = true;
 				break; //get row of Table 2
 			}

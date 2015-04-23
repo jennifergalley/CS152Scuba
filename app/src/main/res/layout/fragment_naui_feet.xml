@@ -124,7 +124,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/pressureLetter"
+            android:text="@string/pressureLetter2"
             android:id="@+id/pressureGroup"
             android:layout_toRightOf="@+id/textView8"
             android:layout_toEndOf="@+id/textView3"

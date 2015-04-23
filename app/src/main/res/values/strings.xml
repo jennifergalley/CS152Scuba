@@ -39,5 +39,5 @@
     <string name="diveOverview">Dive Overview</string>
     <string name="title_activity_show_saved_dive">ShowSavedDive</string>
     <string name="title_activity_view_dives">ViewDives</string>
-
+    <string name="pressureLetter2">N/A</string>
 </resources>

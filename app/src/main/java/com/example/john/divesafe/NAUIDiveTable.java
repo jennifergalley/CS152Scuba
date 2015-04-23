@@ -657,7 +657,7 @@ public class NAUIDiveTable {
 		int row;
 		for (row = 0; row < 12; row++) {
 			int min = surfaceIntervalTime[col][row].getMin();
-			if (minutes > min) {
+			if (minutes >= min) {
 				break; //get row of Table 2
 			}
 		}
