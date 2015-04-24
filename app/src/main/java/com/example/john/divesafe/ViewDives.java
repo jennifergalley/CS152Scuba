@@ -1,16 +1,22 @@
 package com.example.john.divesafe;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -21,31 +27,50 @@ public class ViewDives extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_dives);
 
         fullDiveDBoperation = new FullDiveOperations(this);
         fullDiveDBoperation.open();
 
-        List values = fullDiveDBoperation.getAllDiveNames();
+        List names = fullDiveDBoperation.getAllDiveNames();
 
         // Use the SimpleCursorAdapter to show the
         // elements in a ListView
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, values);
+                android.R.layout.simple_list_item_1, names);
         setListAdapter(adapter);
-    }
 
-/*    @Override
-    protected void onListItemClick (ListActivity parent, View v, int position, long id) {
-        Cursor mycursor = (Cursor) parent.getItemAtPosition(position);
-        Log.d("DSA ", "mycursor.getString(1) " + mycursor.getString(1) + "   ");
-    }*/
+        ListView listView = getListView();
+//        listView.setTextFilterEnabled(true);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                // When clicked, show a toast with the TextView text
+//                Toast.makeText(getApplicationContext(),
+//                        ((TextView) view).getText(), Toast.LENGTH_SHORT).show();
+
+                List dives = fullDiveDBoperation.getAllDives();
+                FullDive dive = (FullDive) dives.get(position);
+                long diveID = dive.getId();
+
+                Intent intent = new Intent(ViewDives.this, ShowSavedDive.class);
+                Bundle b = new Bundle();
+
+                b.putInt("diveID", (int) diveID);
+
+                //Add the set of extended data to the intent and start it
+                intent.putExtras(b);
+                startActivityForResult(intent, 1);
+            }
+        });
+
+    }
 
 
     @Override
     protected void onResume() {
-        fullDiveDBoperation.open();
         super.onResume();
+        this.onCreate(null);
     }
 
     @Override

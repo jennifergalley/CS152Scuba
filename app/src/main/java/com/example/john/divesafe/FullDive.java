@@ -47,7 +47,8 @@ public class FullDive {
 
     @Override
     public String toString() {
-        String toPrint = "Dive: " + name + "\n";
+//        String toPrint = "Dive: " + name + "\n";
+        String toPrint = "";
         for (int i = 0; i < listOfSingleDives.length; i++) {
             if (listOfSingleDives[i] != null) {
                 toPrint += listOfSingleDives[i].toString();

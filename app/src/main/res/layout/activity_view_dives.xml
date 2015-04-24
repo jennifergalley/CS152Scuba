@@ -10,16 +10,18 @@
 
     <TextView
         android:id="@+id/title"
-        android:text="View Your Saved Dives"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Your Saved Dives"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textAlignment="center"
         android:textIsSelectable="false"
         android:gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
+        android:singleLine="false" >
+    </TextView>
 
     <ListView
         android:id="@android:id/list"
