@@ -164,14 +164,7 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
             case R.id.buttonAdd:
             case R.id.buttonDone:
 
-                if (currentDive.size() != 0){
-                    Dive reqSIT = new Dive();
-                    reqSIT.bottomTime = 10;
-                    reqSIT.depth = 0;
-                    reqSIT.isSIT = true;
-                    currentDive.add(reqSIT);
-                }
-                checkSIT();
+
                 if(!(TextUtils.isEmpty(depthNum.getText()) | TextUtils.isEmpty(bottomNum.getText()))) {
 
                     try {
@@ -190,6 +183,14 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                         break;
                     }
 
+                    if (currentDive.size() != 0 && !currentDive.get(currentDive.size()-1).isSIT){
+                        Dive reqSIT = new Dive();
+                        reqSIT.bottomTime = 10;
+                        reqSIT.depth = 0;
+                        reqSIT.isSIT = true;
+                        currentDive.add(reqSIT);
+                    }
+
                     Log.d("NFF ", "Depth: " + (int) depth + " Bottom: " + (int) bottom);
                     //Do stuff here
                     Dive add = new Dive();
@@ -198,12 +199,14 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                     mListener.onDoneButtonListener(1, add);
                     int decompressTime = 0;
 
+                    //add to current dive
+                    currentDive.add(add);
 
                     //determine Current letter group and decompression stop data
 
-                    char PG = DT.getLetterGroupFirstDiveFeet((int) add.depth, (int) add.bottomTime);
-
-                    decompressTime = DT.decompressionStopMinutesFirstDiveFeet((int) add.depth, (int) add.bottomTime);
+                    char PG = DT.getLetterGroupFirstDiveFeet((int) currentDive.get(0).depth, (int) currentDive.get(0).bottomTime);
+                    Log.d("NFF ", "PG: First "+PG);
+                    decompressTime = DT.decompressionStopMinutesFirstDiveFeet((int) currentDive.get(0).depth, (int) currentDive.get(0).bottomTime);
 
                     if (PG == '1' || decompressTime == -1) {
                         depthNum.setText("");
@@ -213,6 +216,7 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                         int duration = Toast.LENGTH_LONG;
                         Toast toast = Toast.makeText(getActivity(), text, duration);
                         toast.show();
+                        currentDive.remove(currentDive.size()-1);
                         break;
                     }
 
@@ -224,7 +228,7 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                             }
 
                             PG = DT.getLetterGroupRepetitiveDiveFeet(PG, (int) currentDive.get(i).depth, (int) currentDive.get(i).bottomTime);
-                            Log.d("NFF ", "PG: " + Character.toString(PG));
+                            Log.d("NFF ", "PG ALoop: " + Character.toString(PG));
                             decompressTime = DT.decompressionStopMinutesRepetitiveDiveFeet(PG, (int) currentDive.get(i).depth, (int) currentDive.get(i).bottomTime);
 
                         }
@@ -237,24 +241,23 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                             int duration = Toast.LENGTH_LONG;
                             Toast toast = Toast.makeText(getActivity(), text, duration);
                             toast.show();
+                            currentDive.remove(currentDive.size() - 1);
                             break;
                         }
                     }
 
-                    //add to current dive
-                    currentDive.add(add);
                     int diveNum = currentDive.size() - 1;
 
                     //remove data in the EditText fields so they can be used again
                     depthNum.setText("");
                     bottomNum.setText("");
 
+
                     //add single dive to single dive table
                     SingleDive sd = diveDBoperation.addDive((int) currentDive.get(diveNum).depth,
                             (int) currentDive.get(diveNum).bottomTime, Character.toString(PG),
                             decompressTime);
                     int diveID = sd.getId();
-
 
                     pressureGroup.setText(Character.toString(PG));
 
@@ -264,9 +267,7 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                     for (int i = 0; i < currentDive.size(); i++) {
                         if (i != 0) {
                             dp.add(new DataPoint(tottime, currentDive.get(i).depth));
-                            Log.d("DSA ", " curr bottom time is: " + currentDive.get(i).bottomTime);
                             tottime = currentDive.get(i).bottomTime + tottime;
-                            Log.d ("DSA ", " new bottom time is: " + currentDive.get(i).bottomTime);
                             dp.add(new DataPoint(tottime, currentDive.get(i).depth));
                         } else {
                             dp.add(new DataPoint(0, 0));
@@ -322,6 +323,9 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
 
                         pressureGroup.setText(Character.toString(newPG));
                         //add to curdive
+                        if(currentDive.get(currentDive.size()-1).bottomTime == 10 && currentDive.get(currentDive.size()-1).isSIT)
+                            currentDive.remove(currentDive.size()-1);
+
                         currentDive.add(sitDive);
 
                         //save single dive id and surface interval time if exists, or 0 if not
@@ -358,6 +362,7 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                     if (view.getId() == R.id.buttonDone) {
                         diveDoneListener.OnDiveCompleted(diveName.getText().toString());
                     }
+
                     break;
 
                 }else{
@@ -387,18 +392,13 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
 
                         //display curDive
                         double tottime  = 0;
-
                         //Add data to the Graph!
                         checkSIT();
                         PG = DT.getLetterGroupFirstDiveFeet((int) currentDive.get(0).depth, (int) currentDive.get(0).bottomTime );
-                        Log.d("NFF ", "PG: " + PG);
-                        Log.d("NFF ", "BT0: " + (int) currentDive.get(0).bottomTime);
                         if (currentDive.size() > 1) {
                             for (int i = 1; i < currentDive.size(); i++) {
                                 if (currentDive.get(i).isSIT) {
                                     PG = DT.getLetterGroupSurfaceIntervalTime(PG, (int) currentDive.get(i).bottomTime);
-                                    Log.d("NFF ", "PG: 2 " + Character.toString(PG));
-                                    Log.d("NFF ", "BTL: " + (int) currentDive.get(i).bottomTime);
                                     continue;
                                 }
 
@@ -424,7 +424,7 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
 
                         pressureGroup.setText(Character.toString(PG));
 
-
+                        tottime = 0;
                         for (int i = 0; i < currentDive.size(); i++) {
                             if (i != 0) {
                                 dp.add(new DataPoint(tottime, currentDive.get(i).depth));
@@ -454,6 +454,7 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                         }
                         break;
                     }
+
                     if (view.getId() != R.id.buttonDone) {
                         Log.d("NFF ", "Depth or Bottom Empty");
                         CharSequence text = "Depth or Bottom Time field empty";
@@ -467,24 +468,123 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                 }
 
 
-            case R.id.undo:            //       FIX ME         //
-                if(currentDive.size() == 0){
-                    break;
-                }
-                currentDive.remove(currentDive.size()-1);
-                //need logic
+            case R.id.undo:
+                //check array is not empty
+                if(!currentDive.isEmpty()) {
+                    // if is not a sit...
+                    // erase dive
+                    if (currentDive.get(currentDive.size() - 1).isSIT == false && currentDive.size() > 1 && currentDive.get(currentDive.size() - 2).bottomTime == 10) {
+                        currentDive.remove(currentDive.size() - 1);
+                        currentDive.remove(currentDive.size() - 1);
+                    } else
+                    if (currentDive.get(currentDive.size() - 1).isSIT == false) {
+                        currentDive.remove(currentDive.size() - 1);
+                    } else
+                    // if sit != 10 min...
+                    // erase sit replace with 10 minute minimum
+                    if(currentDive.get(currentDive.size() - 1).isSIT == true && currentDive.get(currentDive.size() - 1).bottomTime != 10){
+                       currentDive.remove(currentDive.size() - 1);
+                        Dive reqSIT = new Dive();
+                        reqSIT.bottomTime = 10;
+                        reqSIT.depth = 0;
+                        reqSIT.isSIT = true;
+                        currentDive.add(reqSIT);
+                    } else
+                    // if sit == 10 min....
+                    // erase sit and dive
+                    if(currentDive.get(currentDive.size() - 1).isSIT == true && currentDive.get(currentDive.size() - 1).bottomTime == 10){
+                        currentDive.remove(currentDive.size() - 1);
+                        currentDive.remove(currentDive.size() - 1);
+                    }
+
+                    if(currentDive.size() != 0) {
+                        // recalculate Pressure group,decompress stop
+                        int decompressTime = DT.decompressionStopMinutesFirstDiveFeet((int) currentDive.get(0).depth, (int) currentDive.get(0).bottomTime);
+                        char PG = DT.getLetterGroupFirstDiveFeet((int) currentDive.get(0).depth, (int) currentDive.get(0).bottomTime);
+
+                        if (PG == '1' || decompressTime == -1) {
+                            depthNum.setText("");
+                            bottomNum.setText("");
+
+                            CharSequence text = "Error: Dive out of recommended scope";
+                            int duration = Toast.LENGTH_LONG;
+                            Toast toast = Toast.makeText(getActivity(), text, duration);
+                            toast.show();
+                            break;
+                        }
+
+                        if (currentDive.size() > 1) {
+                            for (int i = 1; i < currentDive.size(); i++) {
+                                if (currentDive.get(i).isSIT) {
+                                    PG = DT.getLetterGroupSurfaceIntervalTime(PG, (int) currentDive.get(i).bottomTime);
+                                    continue;
+                                }
+
+                                PG = DT.getLetterGroupRepetitiveDiveFeet(PG, (int) currentDive.get(i).depth, (int) currentDive.get(i).bottomTime);
+                                decompressTime = DT.decompressionStopMinutesRepetitiveDiveFeet(PG, (int) currentDive.get(i).depth, (int) currentDive.get(i).bottomTime);
+                            }
+                        }
+
+                        if (PG == '2') {
+                            CharSequence text = "Error: Wait time is above 24 Hours";
+                            int duration = Toast.LENGTH_LONG;
+                            Toast toast = Toast.makeText(getActivity(), text, duration);
+                            toast.show();
+                            Sit.setText("");
+                        }
+                        if (PG == '1') {
+                            CharSequence text = "Error: Wait time must be above 10 Minutes";
+                            int duration = Toast.LENGTH_LONG;
+                            Toast toast = Toast.makeText(getActivity(), text, duration);
+                            toast.show();
+                            Sit.setText("");
+                        }
+
+                        if (decompressTime != 0) {
+                            decompressStop.setText("15 Ft for " + Integer.toString(decompressTime) + " Min");
+                        }
+                        pressureGroup.setText(Character.toString(PG));
+
+                        // redisplay graph
+                        //Add data to the Graph!
+                        checkSIT();
+                        double tottime = 0;
+                        for (int i = 0; i < currentDive.size(); i++) {
+                            if (i != 0) {
+                                dp.add(new DataPoint(tottime, currentDive.get(i).depth));
+                                Log.d("DSA ", " curr bottom time is: " + currentDive.get(i).bottomTime);
+                                tottime = currentDive.get(i).bottomTime + tottime;
+                                Log.d("DSA ", " new bottom time is: " + currentDive.get(i).bottomTime);
+                                dp.add(new DataPoint(tottime, currentDive.get(i).depth));
+                            } else {
+                                dp.add(new DataPoint(0, 0));
+                                dp.add(new DataPoint(0, currentDive.get(i).depth));
+                                dp.add(new DataPoint(currentDive.get(i).bottomTime, currentDive.get(i).depth));
+                                tottime = currentDive.get(i).bottomTime;
+                            }
+                        }
+
+                        if (currentDive.size() == 1) {
+                            dp.add(new DataPoint(currentDive.get(0).bottomTime, 0));
+                        }
+
+                        series.resetData(dp.toArray(new DataPoint[dp.size()]));
+                        dp.clear();
+                        graph.addSeries(series);
+                    } // end after erase empty check
+                    else { // the array IS empty...
+                        pressureGroup.setText("N/A");
+                        decompressStop.setText("N/A");
+                        dp.clear();
+                        series.resetData(dp.toArray(new DataPoint[dp.size()]));
+                        graph.addSeries(series);
+                    }
+
+                } // end outer empty check
+
                 break;
 
-            /*case R.id.buttonDone:
-                // collect any data entered
-                // save?
-                // move to the results screen
-                Intent intent = new Intent(getActivity(), ResultsScreenActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("diveList", currentDive);
-                intent.putExtras(bundle);
-                startActivity(intent);
-                break;*/
+
 
             default:
                 throw new RuntimeException("Unknown Button");
