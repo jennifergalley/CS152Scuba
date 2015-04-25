@@ -34,6 +34,7 @@ public class DataBaseWrapper extends SQLiteOpenHelper {
     public static final String FULL_DIVE_SIT2 = "_sit2";
     public static final String FULL_DIVE_SIT3 = "_sit3";
     public static final String FULL_DIVE_SIT4 = "_sit4";
+    public static final String FULL_DIVE_EPG = "_endingPressureGroup";
 
     private static final String DATABASE_NAME = "Dive.db";
     private static final int DATABASE_VERSION = 1;
@@ -51,7 +52,8 @@ public class DataBaseWrapper extends SQLiteOpenHelper {
             + FULL_DIVE_SIT1 + " integer,"
             + FULL_DIVE_SIT2 + " integer,"
             + FULL_DIVE_SIT3 + " integer,"
-            + FULL_DIVE_SIT4 + " integer); ";
+            + FULL_DIVE_SIT4 + " integer,"
+            + FULL_DIVE_EPG + " text not null ); ";
     private static final String DIVE_CREATE =
             "create table if not exists " + DIVES
                     + "(" + DIVE_ID + " integer primary key autoincrement, "

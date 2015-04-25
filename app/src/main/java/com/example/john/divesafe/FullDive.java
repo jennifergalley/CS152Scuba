@@ -11,6 +11,7 @@ public class FullDive {
     private String name;
     private int dives[];
     private int SIT[];
+    private String endingPG;
     private SingleDive listOfSingleDives[];
 
     public String getName () { return name; }
@@ -45,6 +46,14 @@ public class FullDive {
 
     public SingleDive[] getListOfSingleDives() { return listOfSingleDives; }
 
+    public void setEndingPG (String PG) {
+        endingPG = PG;
+    }
+
+    public String getEndingPG () {
+        return endingPG;
+    }
+
     @Override
     public String toString() {
 //        String toPrint = "Dive: " + name + "\n";
@@ -57,6 +66,7 @@ public class FullDive {
                 }
             }
         }
+        toPrint += "Ending Pressure Group: " + endingPG;
         return toPrint;
     }
 }

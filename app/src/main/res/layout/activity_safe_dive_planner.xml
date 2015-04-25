@@ -27,18 +27,17 @@
         android:layout_height="wrap_content"
         android:text="Create Dive"
         android:id="@+id/buttonCreateDive"
+        android:layout_marginTop="66dp"
         android:layout_below="@+id/Title"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="39dp"/>
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/buttonViewDives"
         android:text="View Dives"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="59dp"
         android:layout_below="@+id/buttonCreateDive"
-        android:layout_alignLeft="@+id/buttonCreateDive"
-        android:layout_alignStart="@+id/buttonCreateDive"/>
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

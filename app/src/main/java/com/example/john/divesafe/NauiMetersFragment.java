@@ -73,7 +73,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
     }
 
     public interface OnDiveCompletedListener {
-        public void OnDiveCompleted(String name);
+        public void OnDiveCompleted(String name, String EPG);
     }
 
     @Override
@@ -287,6 +287,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         decompressStop.setText("15 Ft for "+ Integer.toString(decompressTime)+" Min");
                     }
 
+                    char newPG = PG;
                     if(!TextUtils.isEmpty(Sit.getText())){
                         int surfaceTime = 0;
                         try{
@@ -298,7 +299,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                             toast.show();
                         }
 
-                        char newPG = DT.getLetterGroupSurfaceIntervalTime(PG, surfaceTime);
+                        newPG = DT.getLetterGroupSurfaceIntervalTime(PG, surfaceTime);
 
                         if(newPG == '2'){
                             CharSequence text = "Error: Wait time is above 24 Hours";
@@ -356,7 +357,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                     }
 
                     if (view.getId() == R.id.buttonDone) {
-                        diveDoneListener.OnDiveCompleted(diveName.getText().toString());
+                        diveDoneListener.OnDiveCompleted(diveName.getText().toString(), newPG+"");
                     }
 
                     break;
@@ -450,7 +451,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         checkSIT(); //combine SIT times if they are left next to one another. so RNT calculates correctly
 
                         if (view.getId() == R.id.buttonDone) {
-                            diveDoneListener.OnDiveCompleted(diveName.getText().toString());
+                            diveDoneListener.OnDiveCompleted(diveName.getText().toString(), PG+"");
                         }
                         break;
                     }
@@ -462,7 +463,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         Toast toast = Toast.makeText(getActivity(), text, duration);
                         toast.show();
                     } else {
-                        diveDoneListener.OnDiveCompleted(diveName.getText().toString());
+                        diveDoneListener.OnDiveCompleted(diveName.getText().toString(), "1");
                     }
                     break;
                 }

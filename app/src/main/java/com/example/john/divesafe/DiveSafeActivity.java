@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class DiveSafeActivity extends Activity
         implements NauiFeetFragment.OnDoneButtonListener, SwapperFragment.OnSwapListener,
@@ -23,6 +24,7 @@ public class DiveSafeActivity extends Activity
     private int diveIDIndex = 0;
     private int SITs[] = new int[4];
     private int SITIndex = 0;
+    private char endingPG;
     private FullDive fd;
     private FullDiveOperations fullDiveDBoperation;
     private SingleDive sd;
@@ -62,18 +64,29 @@ public class DiveSafeActivity extends Activity
         SITs[SITIndex] = 0; //delete Surface Interval Time
     }
 
-    public void OnDiveCompleted (String name) {
+    public void OnDiveCompleted (String name, String EPG) {
         diveName = name;
-        fd = fullDiveDBoperation.addFullDive(diveName, diveIDs, SITs);
+        if (EPG == "1" && diveIDIndex > 0) {
+            EPG = diveDBOperation.getDive(diveIDs[diveIDIndex-1]).getPressGroup();
+        }
+        if (EPG != "1") {
+            fd = fullDiveDBoperation.addFullDive(diveName, diveIDs, SITs, EPG);
+        }
+        if (diveIDIndex > 0) {
+            Intent intent = new Intent(DiveSafeActivity.this, ShowSavedDive.class);
+            Bundle b = new Bundle();
 
-        Intent intent = new Intent(DiveSafeActivity.this, ShowSavedDive.class);
-        Bundle b = new Bundle();
+            b.putInt("diveID", CurrentDive());
 
-        b.putInt("diveID", CurrentDive());
-
-        //Add the set of extended data to the intent and start it
-        intent.putExtras(b);
-        startActivityForResult(intent, 1);
+            //Add the set of extended data to the intent and start it
+            intent.putExtras(b);
+            startActivityForResult(intent, 1);
+        } else {
+            CharSequence text = "No Dive Information Entered";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(this, text, duration);
+            toast.show();
+        }
     }
 
     public int CurrentDive () {
