@@ -73,7 +73,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
     }
 
     public interface OnDiveCompletedListener {
-        public void OnDiveCompleted(String name, String EPG);
+        public void OnDiveCompleted(String name, String EPG, String metric);
     }
 
     @Override
@@ -357,7 +357,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                     }
 
                     if (view.getId() == R.id.buttonDone) {
-                        diveDoneListener.OnDiveCompleted(diveName.getText().toString(), newPG+"");
+                        diveDoneListener.OnDiveCompleted(diveName.getText().toString(), newPG+"", "Meters");
                     }
 
                     break;
@@ -451,7 +451,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         checkSIT(); //combine SIT times if they are left next to one another. so RNT calculates correctly
 
                         if (view.getId() == R.id.buttonDone) {
-                            diveDoneListener.OnDiveCompleted(diveName.getText().toString(), PG+"");
+                            diveDoneListener.OnDiveCompleted(diveName.getText().toString(), PG+"", "Meters");
                         }
                         break;
                     }
@@ -463,7 +463,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         Toast toast = Toast.makeText(getActivity(), text, duration);
                         toast.show();
                     } else {
-                        diveDoneListener.OnDiveCompleted(diveName.getText().toString(), "1");
+                        diveDoneListener.OnDiveCompleted(diveName.getText().toString(), "1", "Meters");
                     }
                     break;
                 }

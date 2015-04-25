@@ -12,6 +12,7 @@ public class FullDive {
     private int dives[];
     private int SIT[];
     private String endingPG;
+    private String metric;
     private SingleDive listOfSingleDives[];
 
     public String getName () { return name; }
@@ -42,7 +43,9 @@ public class FullDive {
         SIT = sit;
     }
 
-    public void setListOfSingleDives(SingleDive[] d) { listOfSingleDives = d; }
+    public void setListOfSingleDives(SingleDive[] d) {
+        listOfSingleDives = d;
+    }
 
     public SingleDive[] getListOfSingleDives() { return listOfSingleDives; }
 
@@ -54,9 +57,20 @@ public class FullDive {
         return endingPG;
     }
 
+    public void setMetric (String met) { metric = met; }
+
+    public String getMetric () { return metric; }
+
     @Override
     public String toString() {
 //        String toPrint = "Dive: " + name + "\n";
+//        String toPrint = "All measurements in: " + metric + "\n";
+        for (int i = 0; i < listOfSingleDives.length; i++) {
+            if (listOfSingleDives[i] != null)
+                listOfSingleDives[i].setMetric (metric);
+            else
+                break;
+        }
         String toPrint = "";
         for (int i = 0; i < listOfSingleDives.length; i++) {
             if (listOfSingleDives[i] != null) {
