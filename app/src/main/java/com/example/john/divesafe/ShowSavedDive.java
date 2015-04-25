@@ -43,7 +43,6 @@ public class ShowSavedDive extends Activity {
         getParameters();
 
         final Button buttonDelete = (Button) findViewById(R.id.buttonDelete);
-        final Button buttonBack = (Button) findViewById(R.id.buttonBack);
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
@@ -51,6 +50,8 @@ public class ShowSavedDive extends Activity {
                 finish();
             }
         });
+
+        final Button buttonBack = (Button) findViewById(R.id.buttonBack);
         buttonBack.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click

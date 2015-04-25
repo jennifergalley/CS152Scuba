@@ -79,7 +79,7 @@
             android:layout_toRightOf="@+id/textView8"
             android:layout_toEndOf="@+id/textView"
             android:linksClickable="true"
-            android:hint="@string/depth_hint"
+            android:hint="Feet"
             android:layout_alignBaseline="@+id/textView"
             android:layout_alignParentEnd="false"
             android:layout_alignParentRight="true" />
@@ -118,7 +118,7 @@
             android:layout_toEndOf="@+id/textView2"
             android:layout_alignBaseline="@+id/textView2"
             android:layout_alignParentRight="true"
-            android:hint="@string/enterBottom" />
+            android:hint="Minutes" />
 
         <TextView
             android:layout_width="match_parent"
@@ -172,7 +172,7 @@
             android:layout_alignBaseline="@+id/textView8"
             android:layout_toEndOf="@+id/textView8"
             android:layout_alignParentRight="true"
-            android:hint="Add SIT..."
+            android:hint="Minutes"
             android:singleLine="false"
             android:inputType="number" />
 

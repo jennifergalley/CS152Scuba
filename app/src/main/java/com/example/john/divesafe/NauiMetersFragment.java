@@ -43,6 +43,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
 
     private OnUpdateSITListener updateSIT;
     private OnDiveAddedListener diveAddedListener;
+    private OnDiveDeletedListener diveDeletedListener;
     private OnDiveCompletedListener diveDoneListener;
 
     private DiveOperations diveDBoperation;
@@ -61,6 +62,10 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
     // Container Activity must implement this interface
     public interface OnDiveAddedListener {
         public void OnDiveAdded(int diveID, int SIT);
+    }
+
+    public interface OnDiveDeletedListener {
+        public void OnDiveDeleted();
     }
 
     public interface OnUpdateSITListener {
@@ -109,6 +114,8 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
     public void onButtonPressed(Uri uri) {
         if (diveAddedListener != null) {
         }
+        if (diveDeletedListener != null) {
+        }
         if (diveDoneListener != null) {
         }
         if (updateSIT != null) {
@@ -120,6 +127,12 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
         super.onAttach(activity);
         try {
             diveAddedListener = (OnDiveAddedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnDiveAddedListener");
+        }
+        try {
+            diveDeletedListener = (OnDiveDeletedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnDiveAddedListener");
@@ -142,6 +155,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
     public void onDetach() {
         super.onDetach();
         diveAddedListener = null;
+        diveDeletedListener = null;
         diveDoneListener = null;
         updateSIT = null;
     }
@@ -564,6 +578,9 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         series.resetData(dp.toArray(new DataPoint[dp.size()]));
                         graph.addSeries(series);
                     }
+
+                    //Delete Dive from DB
+                    diveDeletedListener.OnDiveDeleted();
 
                 } // end outer empty check
 

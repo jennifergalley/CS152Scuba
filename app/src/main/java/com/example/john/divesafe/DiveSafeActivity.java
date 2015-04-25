@@ -15,7 +15,8 @@ public class DiveSafeActivity extends Activity
         implements NauiFeetFragment.OnDoneButtonListener, SwapperFragment.OnSwapListener,
         NauiMetersFragment.OnDiveCompletedListener, NauiMetersFragment.OnDiveAddedListener,
         NauiMetersFragment.OnUpdateSITListener, NauiFeetFragment.OnDiveAddedListener,
-        NauiFeetFragment.OnDiveCompletedListener, NauiFeetFragment.OnUpdateSITListener {
+        NauiFeetFragment.OnDiveCompletedListener, NauiFeetFragment.OnUpdateSITListener,
+        NauiFeetFragment.OnDiveDeletedListener, NauiMetersFragment.OnDiveDeletedListener {
 
     private String diveName;
     private int diveIDs[] = new int[5];
@@ -24,6 +25,8 @@ public class DiveSafeActivity extends Activity
     private int SITIndex = 0;
     private FullDive fd;
     private FullDiveOperations fullDiveDBoperation;
+    private SingleDive sd;
+    private DiveOperations diveDBOperation;
 
 
     public void addDiveID (int diveID) {
@@ -43,6 +46,20 @@ public class DiveSafeActivity extends Activity
     public void OnDiveAdded (int diveID, int SIT) {
         addDiveID (diveID);
         addSIT (SIT);
+    }
+
+    public void OnDiveDeleted () {
+        if (diveIDIndex == 0) {
+            return; //don't delete if out of bounds (no dives)
+        }
+        diveIDIndex--; //get last actual value, update
+        SITIndex--; //get last actual value, update
+        int diveID = diveIDs[diveIDIndex];
+        sd = new SingleDive();
+        sd.setId(diveID);
+        diveDBOperation.deleteDive(sd); //remove dive from single dive table
+        diveIDs[diveIDIndex] = -1; //delete dive ID from full dive
+        SITs[SITIndex] = 0; //delete Surface Interval Time
     }
 
     public void OnDiveCompleted (String name) {
@@ -76,6 +93,8 @@ public class DiveSafeActivity extends Activity
 
         fullDiveDBoperation = new FullDiveOperations(this);
         fullDiveDBoperation.open();
+        diveDBOperation = new DiveOperations(this);
+        diveDBOperation.open();
     }
 
     @Override
