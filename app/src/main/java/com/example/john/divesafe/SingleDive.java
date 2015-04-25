@@ -62,7 +62,7 @@ public class SingleDive {
     @Override
     public String toString() {
         return "Depth: " + this.depth + " " + metric + "\n" +
-                "Bottom Time: " + this.bottomTime  + " Minutes" +"\n" +
+                "Bottom Time: " + this.bottomTime  + " Minutes\n" +
                 "Pressure Group: " + this.pressGroup  + "\n" +
                 "Decompression Time: " + this.decompTime + " Minutes";
     }

@@ -1,6 +1,7 @@
 package com.example.john.divesafe;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -39,6 +40,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
     private Button buttonDone;
     private Button buttonUndo;
     private Button buttonAdd;
+    private Button buttonHome;
     private GraphView graph;
 
     private OnUpdateSITListener updateSIT;
@@ -102,11 +104,13 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
         buttonDone = (Button) view.findViewById(R.id.buttonDone);
         buttonUndo = (Button) view.findViewById(R.id.undo);
         buttonAdd = (Button) view.findViewById(R.id.buttonAdd);
+        buttonHome = (Button) view.findViewById(R.id.home);
         graph = (GraphView) view.findViewById(R.id.graph);
 
         buttonDone.setOnClickListener(this);
         buttonAdd.setOnClickListener(this);
         buttonUndo.setOnClickListener(this);
+        buttonHome.setOnClickListener(this);
         return view;
     }
 
@@ -463,7 +467,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         Toast toast = Toast.makeText(getActivity(), text, duration);
                         toast.show();
                     } else {
-                        diveDoneListener.OnDiveCompleted(diveName.getText().toString(), "1", "Meters");
+                        diveDoneListener.OnDiveCompleted(diveName.getText().toString(), pressureGroup.getText().toString(), "Meters");
                     }
                     break;
                 }
@@ -587,6 +591,10 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
 
                 break;
 
+            case R.id.home:
+                Intent intent = new Intent(getActivity(), SafeDivePlanner.class);
+                getActivity().startActivity(intent);
+                break;
 
             default:
                 throw new RuntimeException("Unknown Button");

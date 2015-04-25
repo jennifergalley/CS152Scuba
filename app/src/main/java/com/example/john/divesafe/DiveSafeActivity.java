@@ -29,6 +29,7 @@ public class DiveSafeActivity extends Activity
     private FullDiveOperations fullDiveDBoperation;
     private SingleDive sd;
     private DiveOperations diveDBOperation;
+    private NAUIDiveTable nauiDiveTable;
 
 
     public void addDiveID (int diveID) {
@@ -66,12 +67,7 @@ public class DiveSafeActivity extends Activity
 
     public void OnDiveCompleted (String name, String EPG, String metric) {
         diveName = name;
-        if (EPG == "1" && diveIDIndex > 0) {
-            EPG = diveDBOperation.getDive(diveIDs[diveIDIndex-1]).getPressGroup();
-        }
-        if (EPG != "1") {
-            fd = fullDiveDBoperation.addFullDive(diveName, diveIDs, SITs, EPG, metric);
-        }
+        fd = fullDiveDBoperation.addFullDive(diveName, diveIDs, SITs, EPG, metric);
         if (diveIDIndex > 0) {
             Intent intent = new Intent(DiveSafeActivity.this, ShowSavedDive.class);
             Bundle b = new Bundle();
