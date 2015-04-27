@@ -485,29 +485,37 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                 if(!currentDive.isEmpty()) {
                     // if is not a sit...
                     // erase dive
-                    if (currentDive.get(currentDive.size() - 1).isSIT == false && currentDive.size() > 1 && currentDive.get(currentDive.size() - 2).bottomTime == 10) {
+                    /*if (currentDive.get(currentDive.size() - 1).isSIT == false && currentDive.size() > 1 && currentDive.get(currentDive.size() - 2).bottomTime == 10) {
                         currentDive.remove(currentDive.size() - 1);
                         currentDive.remove(currentDive.size() - 1);
                     } else
                     if (currentDive.get(currentDive.size() - 1).isSIT == false) {
                         currentDive.remove(currentDive.size() - 1);
                     } else
-                        // if sit != 10 min...
-                        // erase sit replace with 10 minute minimum
-                        if(currentDive.get(currentDive.size() - 1).isSIT == true && currentDive.get(currentDive.size() - 1).bottomTime != 10){
-                            currentDive.remove(currentDive.size() - 1);
-                            Dive reqSIT = new Dive();
-                            reqSIT.bottomTime = 10;
-                            reqSIT.depth = 0;
-                            reqSIT.isSIT = true;
-                            currentDive.add(reqSIT);
-                        } else
-                            // if sit == 10 min....
-                            // erase sit and dive
-                            if(currentDive.get(currentDive.size() - 1).isSIT == true && currentDive.get(currentDive.size() - 1).bottomTime == 10){
-                                currentDive.remove(currentDive.size() - 1);
-                                currentDive.remove(currentDive.size() - 1);
-                            }
+                    // if sit != 10 min...
+                    // erase sit replace with 10 minute minimum
+                    if(currentDive.get(currentDive.size() - 1).isSIT == true && currentDive.get(currentDive.size() - 1).bottomTime != 10){
+                       currentDive.remove(currentDive.size() - 1);
+                        Dive reqSIT = new Dive();
+                        reqSIT.bottomTime = 10;
+                        reqSIT.depth = 0;
+                        reqSIT.isSIT = true;
+                        currentDive.add(reqSIT);
+                    } else
+                    // if sit == 10 min....
+                    // erase sit and dive
+                    if(currentDive.get(currentDive.size() - 1).isSIT == true && currentDive.get(currentDive.size() - 1).bottomTime == 10){
+                        currentDive.remove(currentDive.size() - 1);
+                        currentDive.remove(currentDive.size() - 1);
+                    }*/
+                    if(currentDive.size() > 1) {
+                        currentDive.remove(currentDive.size() - 1);
+                        currentDive.remove(currentDive.size() - 1);
+                    } else if(currentDive.size() == 1){
+                        currentDive.remove(currentDive.size() - 1);
+                    } else {
+                        //do nothing
+                    }
 
                     if(currentDive.size() != 0) {
                         // recalculate Pressure group,decompress stop
