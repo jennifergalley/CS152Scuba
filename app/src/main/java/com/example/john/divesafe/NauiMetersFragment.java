@@ -358,6 +358,9 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         dp.clear();
                         graph.addSeries(series);
                         Sit.setText("");
+                    } else {
+                        //save single dive id and 10 minute surface interval time
+                        diveAddedListener.OnDiveAdded(diveID, 10);
                     }
 
                     if (view.getId() == R.id.buttonDone) {

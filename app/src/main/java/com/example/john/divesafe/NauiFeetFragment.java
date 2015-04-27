@@ -220,8 +220,8 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                     //add to current dive
                     currentDive.add(add);
 
-                    //determine Current letter group and decompression stop data
 
+                    //determine Current letter group and decompression stop data
                     char PG = DT.getLetterGroupFirstDiveFeet((int) currentDive.get(0).depth, (int) currentDive.get(0).bottomTime);
                     Log.d("NFF ", "PG: First "+PG);
                     decompressTime = DT.decompressionStopMinutesFirstDiveFeet((int) currentDive.get(0).depth, (int) currentDive.get(0).bottomTime);
@@ -375,6 +375,9 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                         dp.clear();
                         graph.addSeries(series);
                         Sit.setText("");
+                    } else {
+                        //save single dive id and 10 minute surface interval time
+                        diveAddedListener.OnDiveAdded(diveID, 10);
                     }
 
 
@@ -615,7 +618,6 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.home:
-                Log.d ("exe", "cuting");
                 Intent intent = new Intent(getActivity(), SafeDivePlanner.class);
                 getActivity().startActivity(intent);
                 break;

@@ -35,6 +35,7 @@ public class DiveSafeActivity extends Activity
     public void addDiveID (int diveID) {
         diveIDs[diveIDIndex] = diveID;
         diveIDIndex++;
+        Log.d("Dive Index after Adding", "" + diveIDIndex);
     }
 
     public void addSIT (int SIT) {
@@ -55,6 +56,7 @@ public class DiveSafeActivity extends Activity
         if (diveIDIndex == 0) {
             return; //don't delete if out of bounds (no dives)
         }
+        Log.d("DI b4 deleting", "" + diveIDIndex);
         diveIDIndex--; //get last actual value, update
         SITIndex--; //get last actual value, update
         int diveID = diveIDs[diveIDIndex];
@@ -67,8 +69,8 @@ public class DiveSafeActivity extends Activity
 
     public void OnDiveCompleted (String name, String EPG, String metric) {
         diveName = name;
-        fd = fullDiveDBoperation.addFullDive(diveName, diveIDs, SITs, EPG, metric);
-        if (diveIDIndex > 0) {
+        if (diveIDIndex > 0 && !diveName.isEmpty()) {
+            fd = fullDiveDBoperation.addFullDive(diveName, diveIDs, SITs, EPG, metric);
             Intent intent = new Intent(DiveSafeActivity.this, ShowSavedDive.class);
             Bundle b = new Bundle();
 
@@ -77,8 +79,14 @@ public class DiveSafeActivity extends Activity
             //Add the set of extended data to the intent and start it
             intent.putExtras(b);
             startActivityForResult(intent, 1);
+        } else if (!diveName.isEmpty()) {
+            Log.d("Dive Index", "" + diveIDIndex);
+            CharSequence text = "Error: No Dive Information Entered";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(this, text, duration);
+            toast.show();
         } else {
-            CharSequence text = "No Dive Information Entered";
+            CharSequence text = "Error: Must enter a dive name";
             int duration = Toast.LENGTH_LONG;
             Toast toast = Toast.makeText(this, text, duration);
             toast.show();
