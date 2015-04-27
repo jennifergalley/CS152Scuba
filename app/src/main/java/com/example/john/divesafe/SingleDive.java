@@ -12,6 +12,7 @@ public class SingleDive {
     private int depth;
     private int bottomTime;
     private String pressGroup;
+    private String metric;
     private int decompTime; //depth always 15 feet, for both tables
 
     public int getId() {
@@ -54,11 +55,15 @@ public class SingleDive {
         this.decompTime = time;
     }
 
+    public void setMetric (String m) { metric = m; }
+
+    public String getMetric () { return metric; }
+
     @Override
     public String toString() {
-        return "Depth: " + this.depth + "\n" +
-                "Bottom Time: " + this.bottomTime  + "\n" +
+        return "Depth: " + this.depth + " " + metric + "\n" +
+                "Bottom Time: " + this.bottomTime  + " Minutes\n" +
                 "Pressure Group: " + this.pressGroup  + "\n" +
-                "Decompression Time: " + this.decompTime;
+                "Decompression Time: " + this.decompTime + " Minutes";
     }
 }

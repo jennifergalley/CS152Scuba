@@ -10,20 +10,26 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class DiveSafeActivity extends Activity
         implements NauiFeetFragment.OnDoneButtonListener, SwapperFragment.OnSwapListener,
         NauiMetersFragment.OnDiveCompletedListener, NauiMetersFragment.OnDiveAddedListener,
         NauiMetersFragment.OnUpdateSITListener, NauiFeetFragment.OnDiveAddedListener,
-        NauiFeetFragment.OnDiveCompletedListener, NauiFeetFragment.OnUpdateSITListener {
+        NauiFeetFragment.OnDiveCompletedListener, NauiFeetFragment.OnUpdateSITListener,
+        NauiFeetFragment.OnDiveDeletedListener, NauiMetersFragment.OnDiveDeletedListener {
 
     private String diveName;
     private int diveIDs[] = new int[5];
     private int diveIDIndex = 0;
     private int SITs[] = new int[4];
     private int SITIndex = 0;
+    private char endingPG;
     private FullDive fd;
     private FullDiveOperations fullDiveDBoperation;
+    private SingleDive sd;
+    private DiveOperations diveDBOperation;
+    private NAUIDiveTable nauiDiveTable;
 
 
     public void addDiveID (int diveID) {
@@ -45,18 +51,38 @@ public class DiveSafeActivity extends Activity
         addSIT (SIT);
     }
 
-    public void OnDiveCompleted (String name) {
+    public void OnDiveDeleted () {
+        if (diveIDIndex == 0) {
+            return; //don't delete if out of bounds (no dives)
+        }
+        diveIDIndex--; //get last actual value, update
+        SITIndex--; //get last actual value, update
+        int diveID = diveIDs[diveIDIndex];
+        sd = new SingleDive();
+        sd.setId(diveID);
+        diveDBOperation.deleteDive(sd); //remove dive from single dive table
+        diveIDs[diveIDIndex] = -1; //delete dive ID from full dive
+        SITs[SITIndex] = 0; //delete Surface Interval Time
+    }
+
+    public void OnDiveCompleted (String name, String EPG, String metric) {
         diveName = name;
-        fd = fullDiveDBoperation.addFullDive(diveName, diveIDs, SITs);
+        fd = fullDiveDBoperation.addFullDive(diveName, diveIDs, SITs, EPG, metric);
+        if (diveIDIndex > 0) {
+            Intent intent = new Intent(DiveSafeActivity.this, ShowSavedDive.class);
+            Bundle b = new Bundle();
 
-        Intent intent = new Intent(DiveSafeActivity.this, ShowSavedDive.class);
-        Bundle b = new Bundle();
+            b.putInt("diveID", CurrentDive());
 
-        b.putInt("diveID", CurrentDive());
-
-        //Add the set of extended data to the intent and start it
-        intent.putExtras(b);
-        startActivityForResult(intent, 1);
+            //Add the set of extended data to the intent and start it
+            intent.putExtras(b);
+            startActivityForResult(intent, 1);
+        } else {
+            CharSequence text = "No Dive Information Entered";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(this, text, duration);
+            toast.show();
+        }
     }
 
     public int CurrentDive () {
@@ -76,6 +102,8 @@ public class DiveSafeActivity extends Activity
 
         fullDiveDBoperation = new FullDiveOperations(this);
         fullDiveDBoperation.open();
+        diveDBOperation = new DiveOperations(this);
+        diveDBOperation.open();
     }
 
     @Override

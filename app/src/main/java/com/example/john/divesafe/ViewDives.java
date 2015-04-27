@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,12 +33,23 @@ public class ViewDives extends ListActivity {
         fullDiveDBoperation.open();
 
         List names = fullDiveDBoperation.getAllDiveNames();
+        if (names.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "No Dives Saved", Toast.LENGTH_SHORT).show();
+        }
 
         // Use the SimpleCursorAdapter to show the
         // elements in a ListView
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, names);
         setListAdapter(adapter);
+
+/*        final Button buttonBack = (Button) findViewById(R.id.buttonBack);
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+                finish();
+            }
+        });*/
 
         ListView listView = getListView();
 //        listView.setTextFilterEnabled(true);
@@ -63,6 +75,7 @@ public class ViewDives extends ListActivity {
                 startActivityForResult(intent, 1);
             }
         });
+
 
     }
 

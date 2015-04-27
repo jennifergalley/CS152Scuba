@@ -10,11 +10,6 @@
         <activity
             android:name=".DiveSafeActivity"
             android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".SaveDiver"
@@ -38,7 +33,16 @@
         </activity>
         <activity
             android:name=".ViewDives"
-            android:label="@string/title_activity_view_dives" >
+            android:label="ViewDives" >
+        </activity>
+        <activity
+            android:name=".SafeDivePlanner"
+            android:label="Safe Dive Planner" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

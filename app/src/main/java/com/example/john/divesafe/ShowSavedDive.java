@@ -2,6 +2,7 @@ package com.example.john.divesafe;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,7 +44,6 @@ public class ShowSavedDive extends Activity {
         getParameters();
 
         final Button buttonDelete = (Button) findViewById(R.id.buttonDelete);
-        final Button buttonBack = (Button) findViewById(R.id.buttonBack);
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
@@ -51,6 +51,16 @@ public class ShowSavedDive extends Activity {
                 finish();
             }
         });
+
+        final Button buttonHome = (Button) findViewById(R.id.buttonHome);
+        buttonHome.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(ShowSavedDive.this, SafeDivePlanner.class);
+                startActivity(intent);
+            }
+        });
+
+        final Button buttonBack = (Button) findViewById(R.id.buttonBack);
         buttonBack.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click

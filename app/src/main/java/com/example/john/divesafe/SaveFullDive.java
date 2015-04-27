@@ -99,7 +99,7 @@ public class SaveFullDive extends ListActivity {
             }
         }
 
-        FullDive fullDive = fullDiveDBoperation.addFullDive(name.getText().toString(), diveIDs, sit_arr);
+        FullDive fullDive = fullDiveDBoperation.addFullDive(name.getText().toString(), diveIDs, sit_arr, pgroup[4]+"", "Feet");
 
         adapter.add(fullDive);
 

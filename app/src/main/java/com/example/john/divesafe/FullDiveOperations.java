@@ -23,7 +23,8 @@ public class FullDiveOperations extends DiveOperations {
             DataBaseWrapper.FULL_DIVE_DIVE2, DataBaseWrapper.FULL_DIVE_DIVE3,
             DataBaseWrapper.FULL_DIVE_DIVE4, DataBaseWrapper.FULL_DIVE_DIVE5,
             DataBaseWrapper.FULL_DIVE_SIT1, DataBaseWrapper.FULL_DIVE_SIT2,
-            DataBaseWrapper.FULL_DIVE_SIT3, DataBaseWrapper.FULL_DIVE_SIT4
+            DataBaseWrapper.FULL_DIVE_SIT3, DataBaseWrapper.FULL_DIVE_SIT4,
+            DataBaseWrapper.FULL_DIVE_EPG, DataBaseWrapper.FULL_DIVE_METRIC
     };
     private SQLiteDatabase database;
 
@@ -33,14 +34,14 @@ public class FullDiveOperations extends DiveOperations {
 
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
-//        dbHelper.onUpgrade(database, 1, 2);
+//        dbHelper.onUpgrade(database, 3, 4);
     }
 
     public void close() {
         dbHelper.close();
     }
 
-    public FullDive addFullDive (String diveName, int[] diveIDs, int[] sit) {
+    public FullDive addFullDive (String diveName, int[] diveIDs, int[] sit, String EPG, String metric) {
 
         ContentValues values = new ContentValues();
 
@@ -64,6 +65,9 @@ public class FullDiveOperations extends DiveOperations {
             values.put(DataBaseWrapper.FULL_DIVE_SIT3, sit[2]);
         if (sit[3] != -1)
             values.put(DataBaseWrapper.FULL_DIVE_SIT4, sit[3]);
+
+        values.put(DataBaseWrapper.FULL_DIVE_EPG, EPG);
+        values.put(DataBaseWrapper.FULL_DIVE_METRIC, metric);
 
         long fullDiveId = database.insert(DataBaseWrapper.FULL_DIVE, null, values);
 
@@ -156,6 +160,8 @@ public class FullDiveOperations extends DiveOperations {
             sit[i-sitIndex] = cursor.getInt(i);
         }
         fullDive.setSIT(sit);
+        fullDive.setEndingPG(cursor.getString(end));
+        fullDive.setMetric(cursor.getString(end+1));
 
         return fullDive;
     }
@@ -186,6 +192,8 @@ public class FullDiveOperations extends DiveOperations {
             sit[i-sitIndex] = cursor.getInt(i);
         }
         fullDive.setSIT(sit);
+        fullDive.setEndingPG(cursor.getString(end));
+        fullDive.setMetric(cursor.getString(end+1));
 
         return fullDive;
     }

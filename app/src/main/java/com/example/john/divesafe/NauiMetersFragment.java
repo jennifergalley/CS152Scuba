@@ -1,6 +1,7 @@
 package com.example.john.divesafe;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -39,10 +40,12 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
     private Button buttonDone;
     private Button buttonUndo;
     private Button buttonAdd;
+    private Button buttonHome;
     private GraphView graph;
 
     private OnUpdateSITListener updateSIT;
     private OnDiveAddedListener diveAddedListener;
+    private OnDiveDeletedListener diveDeletedListener;
     private OnDiveCompletedListener diveDoneListener;
 
     private DiveOperations diveDBoperation;
@@ -63,12 +66,16 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
         public void OnDiveAdded(int diveID, int SIT);
     }
 
+    public interface OnDiveDeletedListener {
+        public void OnDiveDeleted();
+    }
+
     public interface OnUpdateSITListener {
         public void OnUpdateSIT (int SIT[]);
     }
 
     public interface OnDiveCompletedListener {
-        public void OnDiveCompleted(String name);
+        public void OnDiveCompleted(String name, String EPG, String metric);
     }
 
     @Override
@@ -97,17 +104,21 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
         buttonDone = (Button) view.findViewById(R.id.buttonDone);
         buttonUndo = (Button) view.findViewById(R.id.undo);
         buttonAdd = (Button) view.findViewById(R.id.buttonAdd);
+        buttonHome = (Button) view.findViewById(R.id.home);
         graph = (GraphView) view.findViewById(R.id.graph);
 
         buttonDone.setOnClickListener(this);
         buttonAdd.setOnClickListener(this);
         buttonUndo.setOnClickListener(this);
+        buttonHome.setOnClickListener(this);
         return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (diveAddedListener != null) {
+        }
+        if (diveDeletedListener != null) {
         }
         if (diveDoneListener != null) {
         }
@@ -120,6 +131,12 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
         super.onAttach(activity);
         try {
             diveAddedListener = (OnDiveAddedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnDiveAddedListener");
+        }
+        try {
+            diveDeletedListener = (OnDiveDeletedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnDiveAddedListener");
@@ -142,6 +159,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
     public void onDetach() {
         super.onDetach();
         diveAddedListener = null;
+        diveDeletedListener = null;
         diveDoneListener = null;
         updateSIT = null;
     }
@@ -273,6 +291,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         decompressStop.setText("15 Ft for "+ Integer.toString(decompressTime)+" Min");
                     }
 
+                    char newPG = PG;
                     if(!TextUtils.isEmpty(Sit.getText())){
                         int surfaceTime = 0;
                         try{
@@ -284,7 +303,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                             toast.show();
                         }
 
-                        char newPG = DT.getLetterGroupSurfaceIntervalTime(PG, surfaceTime);
+                        newPG = DT.getLetterGroupSurfaceIntervalTime(PG, surfaceTime);
 
                         if(newPG == '2'){
                             CharSequence text = "Error: Wait time is above 24 Hours";
@@ -342,7 +361,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                     }
 
                     if (view.getId() == R.id.buttonDone) {
-                        diveDoneListener.OnDiveCompleted(diveName.getText().toString());
+                        diveDoneListener.OnDiveCompleted(diveName.getText().toString(), newPG+"", "Meters");
                     }
 
                     break;
@@ -436,7 +455,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         checkSIT(); //combine SIT times if they are left next to one another. so RNT calculates correctly
 
                         if (view.getId() == R.id.buttonDone) {
-                            diveDoneListener.OnDiveCompleted(diveName.getText().toString());
+                            diveDoneListener.OnDiveCompleted(diveName.getText().toString(), PG+"", "Meters");
                         }
                         break;
                     }
@@ -448,7 +467,7 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         Toast toast = Toast.makeText(getActivity(), text, duration);
                         toast.show();
                     } else {
-                        diveDoneListener.OnDiveCompleted(diveName.getText().toString());
+                        diveDoneListener.OnDiveCompleted(diveName.getText().toString(), pressureGroup.getText().toString(), "Meters");
                     }
                     break;
                 }
@@ -565,10 +584,17 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         graph.addSeries(series);
                     }
 
+                    //Delete Dive from DB
+                    diveDeletedListener.OnDiveDeleted();
+
                 } // end outer empty check
 
                 break;
 
+            case R.id.home:
+                Intent intent = new Intent(getActivity(), SafeDivePlanner.class);
+                getActivity().startActivity(intent);
+                break;
 
             default:
                 throw new RuntimeException("Unknown Button");

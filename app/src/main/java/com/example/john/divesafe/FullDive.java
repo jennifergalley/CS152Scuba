@@ -11,6 +11,8 @@ public class FullDive {
     private String name;
     private int dives[];
     private int SIT[];
+    private String endingPG;
+    private String metric;
     private SingleDive listOfSingleDives[];
 
     public String getName () { return name; }
@@ -41,22 +43,44 @@ public class FullDive {
         SIT = sit;
     }
 
-    public void setListOfSingleDives(SingleDive[] d) { listOfSingleDives = d; }
+    public void setListOfSingleDives(SingleDive[] d) {
+        listOfSingleDives = d;
+    }
 
     public SingleDive[] getListOfSingleDives() { return listOfSingleDives; }
+
+    public void setEndingPG (String PG) {
+        endingPG = PG;
+    }
+
+    public String getEndingPG () {
+        return endingPG;
+    }
+
+    public void setMetric (String met) { metric = met; }
+
+    public String getMetric () { return metric; }
 
     @Override
     public String toString() {
 //        String toPrint = "Dive: " + name + "\n";
+//        String toPrint = "All measurements in: " + metric + "\n";
+        for (int i = 0; i < listOfSingleDives.length; i++) {
+            if (listOfSingleDives[i] != null)
+                listOfSingleDives[i].setMetric (metric);
+            else
+                break;
+        }
         String toPrint = "";
         for (int i = 0; i < listOfSingleDives.length; i++) {
             if (listOfSingleDives[i] != null) {
                 toPrint += listOfSingleDives[i].toString();
                 if (i < listOfSingleDives.length - 1) {
-                    toPrint += "\nSurface Interval Time: " + SIT[i] + "\n";
+                    toPrint += "\nSurface Interval Time: " + SIT[i] + " Minutes\n";
                 }
             }
         }
+        toPrint += "Ending Pressure Group: " + endingPG;
         return toPrint;
     }
 }
