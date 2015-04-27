@@ -76,7 +76,7 @@ public class FullDive {
             if (listOfSingleDives[i] != null) {
                 toPrint += listOfSingleDives[i].toString();
                 if (i < listOfSingleDives.length - 1) {
-                    toPrint += "\nSurface Interval Time: " + SIT[i] + " Minutes\n\n";
+                    toPrint += "\n\nSurface Interval Time: " + SIT[i] + " Minutes\n\n";
                 }
             }
         }
