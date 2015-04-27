@@ -35,7 +35,6 @@ public class DiveSafeActivity extends Activity
     public void addDiveID (int diveID) {
         diveIDs[diveIDIndex] = diveID;
         diveIDIndex++;
-        Log.d("Dive Index after Adding", "" + diveIDIndex);
     }
 
     public void addSIT (int SIT) {
@@ -56,7 +55,6 @@ public class DiveSafeActivity extends Activity
         if (diveIDIndex == 0) {
             return; //don't delete if out of bounds (no dives)
         }
-        Log.d("DI b4 deleting", "" + diveIDIndex);
         diveIDIndex--; //get last actual value, update
         SITIndex--; //get last actual value, update
         int diveID = diveIDs[diveIDIndex];
@@ -80,7 +78,6 @@ public class DiveSafeActivity extends Activity
             intent.putExtras(b);
             startActivityForResult(intent, 1);
         } else if (!diveName.isEmpty()) {
-            Log.d("Dive Index", "" + diveIDIndex);
             CharSequence text = "Error: No Dive Information Entered";
             int duration = Toast.LENGTH_LONG;
             Toast toast = Toast.makeText(this, text, duration);

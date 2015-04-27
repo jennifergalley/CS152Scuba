@@ -192,13 +192,13 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
 
                         break;
                     }
-                    if (currentDive.size() != 0 && !currentDive.get(currentDive.size()-1).isSIT){
+                    /*if (currentDive.size() != 0 && !currentDive.get(currentDive.size()-1).isSIT){
                         Dive reqSIT = new Dive();
                         reqSIT.bottomTime = 10;
                         reqSIT.depth = 0;
                         reqSIT.isSIT = true;
                         currentDive.add(reqSIT);
-                    }
+                    }*/
 
                     Log.d("NFF ", "Depth: " + (int) depth + " Bottom: " + (int) bottom);
                     //Do stuff here
@@ -360,6 +360,11 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                         Sit.setText("");
                     } else {
                         //save single dive id and 10 minute surface interval time
+                        Dive reqSIT = new Dive();
+                        reqSIT.bottomTime = 10;
+                        reqSIT.depth = 0;
+                        reqSIT.isSIT = true;
+                        currentDive.add(reqSIT);
                         diveAddedListener.OnDiveAdded(diveID, 10);
                     }
 
