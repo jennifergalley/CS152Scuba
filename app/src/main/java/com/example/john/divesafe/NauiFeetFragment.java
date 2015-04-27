@@ -473,7 +473,7 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                 if(!currentDive.isEmpty()) {
                     // if is not a sit...
                     // erase dive
-                    if (currentDive.get(currentDive.size() - 1).isSIT == false && currentDive.size() > 1 && currentDive.get(currentDive.size() - 2).bottomTime == 10) {
+                    /*if (currentDive.get(currentDive.size() - 1).isSIT == false && currentDive.size() > 1 && currentDive.get(currentDive.size() - 2).bottomTime == 10) {
                         currentDive.remove(currentDive.size() - 1);
                         currentDive.remove(currentDive.size() - 1);
                     } else
@@ -495,6 +495,14 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                     if(currentDive.get(currentDive.size() - 1).isSIT == true && currentDive.get(currentDive.size() - 1).bottomTime == 10){
                         currentDive.remove(currentDive.size() - 1);
                         currentDive.remove(currentDive.size() - 1);
+                    }*/
+                    if(currentDive.size() > 1) {
+                        currentDive.remove(currentDive.size() - 1);
+                        currentDive.remove(currentDive.size() - 1);
+                    } else if(currentDive.size() == 1){
+                        currentDive.remove(currentDive.size() - 1);
+                    } else {
+                        //do nothing
                     }
 
                     if(currentDive.size() != 0) {
