@@ -224,15 +224,17 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
                     }
 
                     if (currentDive.size() > 1) {
+                        PG = DT.getLetterGroupFirstDiveMeters((int) currentDive.get(0).depth, (int) currentDive.get(0).bottomTime); //get first dive's ending PG
+                        decompressTime = DT.decompressionStopMinutesFirstDiveMeters((int) currentDive.get(0).depth, (int) currentDive.get(0).bottomTime); //get first dive's ending DT
                         for (int i = 1; i < currentDive.size(); i++) {
                             if (currentDive.get(i).isSIT) {
                                 PG = DT.getLetterGroupSurfaceIntervalTime(PG, (int) currentDive.get(i).bottomTime);
                                 continue;
                             }
-
+                            decompressTime = DT.decompressionStopMinutesRepetitiveDiveMeters(PG, (int) currentDive.get(i).depth, (int) currentDive.get(i).bottomTime);
+                            Log.d("NFF ", "Decomp Time: " + decompressTime);
                             PG = DT.getLetterGroupRepetitiveDiveMeters(PG, (int) currentDive.get(i).depth, (int) currentDive.get(i).bottomTime);
                             Log.d("NFF ", "PG ALoop: " + Character.toString(PG));
-                            decompressTime = DT.decompressionStopMinutesRepetitiveDiveMeters(PG, (int) currentDive.get(i).depth, (int) currentDive.get(i).bottomTime);
 
                         }
 
@@ -329,6 +331,8 @@ public class NauiMetersFragment extends Fragment implements View.OnClickListener
 
                         if(currentDive.get(currentDive.size()-1).bottomTime == 10 && currentDive.get(currentDive.size()-1).isSIT)
                             currentDive.remove(currentDive.size()-1);
+
+                        pressureGroup.setText(Character.toString(newPG));
                         //add to curdive
                         currentDive.add(sitDive);
 

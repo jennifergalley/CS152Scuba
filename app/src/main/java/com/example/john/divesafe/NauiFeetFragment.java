@@ -239,15 +239,17 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
                     }
 
                     if (currentDive.size() > 1) {
+                        PG = DT.getLetterGroupFirstDiveFeet((int) currentDive.get(0).depth, (int) currentDive.get(0).bottomTime); //get first dive's ending PG
+                        decompressTime = DT.decompressionStopMinutesFirstDiveFeet((int) currentDive.get(0).depth, (int) currentDive.get(0).bottomTime); //get first dive's ending DT
                         for (int i = 1; i < currentDive.size(); i++) {
                             if (currentDive.get(i).isSIT) {
                                 PG = DT.getLetterGroupSurfaceIntervalTime(PG, (int) currentDive.get(i).bottomTime);
                                 continue;
                             }
-
+                            decompressTime = DT.decompressionStopMinutesRepetitiveDiveFeet(PG, (int) currentDive.get(i).depth, (int) currentDive.get(i).bottomTime);
+                            Log.d("NFF ", "Decomp Time: " + decompressTime);
                             PG = DT.getLetterGroupRepetitiveDiveFeet(PG, (int) currentDive.get(i).depth, (int) currentDive.get(i).bottomTime);
                             Log.d("NFF ", "PG ALoop: " + Character.toString(PG));
-                            decompressTime = DT.decompressionStopMinutesRepetitiveDiveFeet(PG, (int) currentDive.get(i).depth, (int) currentDive.get(i).bottomTime);
 
                         }
 
