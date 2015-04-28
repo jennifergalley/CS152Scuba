@@ -304,6 +304,8 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
 
                     if(decompressTime != 0){
                         decompressStop.setText("15 Ft for "+ Integer.toString(decompressTime)+" Min");
+                    } else {
+                        decompressStop.setText("N/A"); //blank Decompression stop
                     }
 
                     char newPG = PG;
@@ -577,6 +579,8 @@ public class NauiFeetFragment extends Fragment implements View.OnClickListener {
 
                         if (decompressTime != 0) {
                             decompressStop.setText("15 Ft for " + Integer.toString(decompressTime) + " Min");
+                        } else {
+                            decompressStop.setText("N/A"); //blank Decompression stop
                         }
                         pressureGroup.setText(Character.toString(PG));
 
