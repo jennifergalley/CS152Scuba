@@ -1,5 +1,14 @@
 package com.example.john.divesafe;
 
+/*
+*
+*	NOTICE - THIS CODE IS NOT TO BE USED FOR REAL DIVING. IT IS A SCHOOL PROJECT ONLY.
+*	DO NOT USE THIS APP FOR REAL DIVING. YOUR SAFETY IS NOT GUARANTEED.
+*	THIS IS NOT SAFETY CRITICAL SOFTWARE DEVELOPED BY PROFESSIONALS.
+*	IT IS AN APP CREATED BY COLLEGE STUDENTS FOR CLASSWORK ONLY.
+*
+*/
+
 public class SurfaceIntervalRange {
 	private int min; //bottom number in NAUI Table 2, in minutes
 	private int max; //top number in NAUI Table 2, in minutes

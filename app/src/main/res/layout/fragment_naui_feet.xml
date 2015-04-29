@@ -1,3 +1,12 @@
+
+<!--
+    NOTICE - THIS CODE IS NOT TO BE USED FOR REAL DIVING. IT IS A SCHOOL PROJECT ONLY.
+    DO NOT USE THIS APP FOR REAL DIVING. YOUR SAFETY IS NOT GUARANTEED.
+    THIS IS NOT SAFETY CRITICAL SOFTWARE DEVELOPED BY PROFESSIONALS.
+    IT IS AN APP CREATED BY COLLEGE STUDENTS FOR CLASSWORK ONLY.
+-->
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -194,6 +203,7 @@
                 android:layout_gravity="left"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
+                android:textSize="12sp"
                 android:layout_alignParentEnd="true" />
 
             <Button
@@ -203,6 +213,7 @@
                 android:id="@+id/buttonAdd"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
+                android:textSize="12sp"
                 android:layout_alignParentStart="true" />
 
             <Button
@@ -212,6 +223,8 @@
                 android:text="@string/undoButton"
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/buttonAdd"
+                android:textSize="12sp"
+                android:layout_toLeftOf="@+id/home"
                 android:layout_toEndOf="@+id/buttonAdd"/>
 
             <Button
@@ -220,6 +233,7 @@
                 android:id="@+id/home"
                 android:text="Home"
                 android:layout_alignParentTop="true"
+                android:textSize="12sp"
                 android:layout_toLeftOf="@+id/buttonDone"
                 android:layout_toStartOf="@+id/buttonDone"/>
 
